@@ -2,6 +2,8 @@
 
 #include "SpecterFront.h"
 #include "SpecterFrontProjectile.h"
+#include "Engine.h"
+
 #include "GameFramework/ProjectileMovementComponent.h"
 
 ASpecterFrontProjectile::ASpecterFrontProjectile() 
@@ -36,6 +38,8 @@ void ASpecterFrontProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, GetVelocity().ToString());
+
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
 		Destroy();

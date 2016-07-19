@@ -4,6 +4,7 @@
 #include "SpecterFrontCharacter.h"
 #include "SpecterFrontProjectile.h"
 #include "Animation/AnimInstance.h"
+#include "Engine.h"
 #include "GameFramework/InputSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -100,10 +101,35 @@ void ASpecterFrontCharacter::OnFire()
 		const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
 
 		UWorld* const World = GetWorld();
+
 		if (World != NULL)
 		{
 			// spawn the projectile at the muzzle
-			World->SpawnActor<ASpecterFrontProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+			FHitResult hit;
+			FVector start = FVector(Cast<UCameraComponent>(GetComponentByClass(UCameraComponent::StaticClass()))->GetComponentLocation());
+			FVector end = start + Cast<UCameraComponent>(GetComponentByClass(UCameraComponent::StaticClass()))->GetForwardVector() * 3000.0f;
+			ECollisionChannel c = ECollisionChannel::ECC_WorldStatic;
+			FCollisionQueryParams p;
+			FCollisionResponseParams rp;
+			p.AddIgnoredActor(this);
+
+			bool isHit = World->LineTraceSingleByChannel(hit, start, end, c, p, rp);
+			if (isHit)
+			{
+				//auto o = World->SpawnActor<ASpecterFrontProjectile>(ProjectileClass, hit.ImpactPoint, SpawnRotation);
+
+				auto component = Cast<UPrimitiveComponent>(hit.Actor->GetComponentByClass(UPrimitiveComponent::StaticClass()));
+				if ((hit.Actor != NULL) && (hit.Actor != this) && component->IsSimulatingPhysics())
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, FString(hit.Actor->GetName()));
+					FVector to = hit.ImpactPoint;
+					FVector from = FP_Gun->GetComponentLocation();
+					FVector vec = (to - from).GetSafeNormal();
+					GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, hit.Component->GetName());
+					hit.Component->SetSimulatePhysics(true);
+					hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
+				}
+			}
 		}
 	}
 
