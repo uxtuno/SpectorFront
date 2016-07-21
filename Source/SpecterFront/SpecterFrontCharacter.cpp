@@ -3,6 +3,7 @@
 #include "SpecterFront.h"
 #include "SpecterFrontCharacter.h"
 #include "SpecterFrontProjectile.h"
+#include "TestMove_PingPong.h"
 #include "Animation/AnimInstance.h"
 #include "Engine.h"
 #include "GameFramework/InputSettings.h"
@@ -127,6 +128,17 @@ void ASpecterFrontCharacter::OnFire()
 					FVector vec = (to - from).GetSafeNormal();
 					GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, hit.Component->GetName());
 					hit.Component->SetSimulatePhysics(true);
+					hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
+				}
+				else if (hit.Actor->ActorHasTag("Enemy"))
+				{
+					FVector to = hit.ImpactPoint;
+					FVector from = FP_Gun->GetComponentLocation();
+					FVector vec = (to - from).GetSafeNormal();
+					TSubclassOf<UDamageType> const ValidDamageTypeClass = TSubclassOf<UDamageType>(UDamageType::StaticClass());
+					FDamageEvent DamageEvent(ValidDamageTypeClass);
+
+					hit.Actor->TakeDamage(100.0f, DamageEvent, GetController(), this);
 					hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
 				}
 			}
