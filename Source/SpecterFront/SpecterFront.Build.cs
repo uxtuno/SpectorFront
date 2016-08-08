@@ -10,7 +10,7 @@ public class SpecterFront : ModuleRules
 
 		//if (Target.Configuration == UnrealTargetConfiguration.DebugGame)
 		//{
-		BuildConfiguration.bUseUnityBuild = false;
+		//BuildConfiguration.bUseUnityBuild = false;
 		//}
 	}
 }
