@@ -6,14 +6,14 @@
 #include "Lantern.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class SPECTERFRONT_API ALantern : public ABaseEnemy
 {
 	GENERATED_BODY()
-	
-	
-	
-	
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
+		float moveSpeed;
 };

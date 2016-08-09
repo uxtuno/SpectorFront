@@ -5,9 +5,6 @@
 #include "MyCharacter.h"
 #include "BaseEnemy.generated.h"
 
-/**
- *
- */
 UCLASS(abstract)
 class SPECTERFRONT_API ABaseEnemy : public AMyCharacter
 {
@@ -15,5 +12,4 @@ class SPECTERFRONT_API ABaseEnemy : public AMyCharacter
 
 public:
 	virtual void Wait(float tick);
-
 };

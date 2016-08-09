@@ -23,8 +23,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Integer)
-		int32 hp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
+		float hp;
 private:
 
 };
