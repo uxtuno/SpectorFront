@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "MyCharacter.h"
+#include "GameFramework/Pawn.h"
 #include "BaseEnemy.generated.h"
 
 UCLASS(abstract)
-class SPECTERFRONT_API ABaseEnemy : public AMyCharacter
+class SPECTERFRONT_API ABaseEnemy : public APawn
 {
 	GENERATED_BODY()
 
