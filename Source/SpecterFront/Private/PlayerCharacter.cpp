@@ -2,6 +2,7 @@
 
 #include "SpecterFront.h"
 #include "PlayerCharacter.h"
+#include "BaseEnemy.h"
 
 #include "SpecterFrontProjectile.h"
 #include "TestMove_PingPong.h"
@@ -137,8 +138,9 @@ void APlayerCharacter::OnFire()
 					TSubclassOf<UDamageType> const ValidDamageTypeClass = TSubclassOf<UDamageType>(UDamageType::StaticClass());
 					FDamageEvent DamageEvent(ValidDamageTypeClass);
 
-					hit.Actor->TakeDamage(100.0f, DamageEvent, GetController(), this);
-					hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
+					Cast<ABaseEnemy, AActor>(hit.Actor)->OnDamage(power, GetController(), this);
+					if (hit.Component->IsSimulatingPhysics())
+						hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
 				}
 			}
 		}
