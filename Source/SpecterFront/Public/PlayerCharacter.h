@@ -10,7 +10,7 @@ UCLASS()
 class SPECTERFRONT_API APlayerCharacter : public AMyCharacter
 {
 	GENERATED_BODY()
-	
+
 		/** Pawn mesh: 1st person view (arms; seen only by self) */
 		UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class USkeletalMeshComponent* Mesh1P;
@@ -30,6 +30,7 @@ public:
 	APlayerCharacter();
 
 	virtual void BeginPlay();
+	virtual void Tick(float deltaTime) override;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
@@ -59,6 +60,8 @@ protected:
 
 	/** Fires a projectile. */
 	void OnFire();
+	void OnFirePressed();
+	void OnFireReleased();
 
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
@@ -117,4 +120,15 @@ public:
 	// 攻撃力
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
 		float power;
+
+	// 発射間隔(秒)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
+		float shootInterval = 0.2f;
+
+private:
+	// 発射可能時間までをカウントダウンする(0.0f以下なら発射可能)
+	float shootIntervalCount;
+
+	// 発射入力をTick()で処理するために使用
+	bool isShootInput;
 };

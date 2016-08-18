@@ -8,6 +8,7 @@
 #include "TestMove_PingPong.h"
 #include "Animation/AnimInstance.h"
 #include "Engine.h"
+#include <sstream>
 #include "GameFramework/InputSettings.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,6 +62,33 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint")); //Attach gun mesh component to Skeleton, doing it here because the skelton is not yet created in the constructor
+
+	isShootInput = false;
+	shootIntervalCount = 0.0f;
+}
+
+void APlayerCharacter::Tick(float deltaTime)
+{
+	std::wostringstream oss(shootIntervalCount);
+
+	if (shootIntervalCount <= 0.0f)
+	{
+		if (isShootInput)
+		{
+			OnFire();
+			// クールタイムを設定
+			shootIntervalCount = shootInterval;
+		}
+	}
+	else
+	{
+		// クールタイムをカウントダウン
+		shootIntervalCount -= deltaTime;
+		if (shootIntervalCount <= 0.0f)
+		{
+			shootIntervalCount = 0.0f;
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,11 +101,12 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-
+	
 	//InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &APlayerCharacter::TouchStarted);
 	if (EnableTouchscreenMovement(InputComponent) == false)
 	{
-		InputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::OnFire);
+		InputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::OnFirePressed);
+		InputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::OnFireReleased);
 	}
 
 	InputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
@@ -100,7 +129,7 @@ void APlayerCharacter::OnFire()
 		const FRotator SpawnRotation = GetControlRotation();
 		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
 		const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
-
+		
 		UWorld* const World = GetWorld();
 
 		if (World != NULL)
@@ -163,6 +192,16 @@ void APlayerCharacter::OnFire()
 		}
 	}
 
+}
+
+void APlayerCharacter::OnFirePressed()
+{
+	isShootInput = true;
+}
+
+void APlayerCharacter::OnFireReleased()
+{
+	isShootInput = false;
 }
 
 void APlayerCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
