@@ -65,10 +65,14 @@ void APlayerCharacter::BeginPlay()
 
 	isShootInput = false;
 	shootIntervalCount = 0.0f;
+
+	reticleLocation = FVector2D(0.5f, 0.5f);
 }
 
 void APlayerCharacter::Tick(float deltaTime)
 {
+	Super::Tick(deltaTime);
+
 	std::wostringstream oss(shootIntervalCount);
 
 	if (shootIntervalCount <= 0.0f)
@@ -89,6 +93,17 @@ void APlayerCharacter::Tick(float deltaTime)
 			shootIntervalCount = 0.0f;
 		}
 	}
+
+	Move();
+}
+
+void APlayerCharacter::Move_Implementation()
+{
+}
+
+FVector2D APlayerCharacter::GetReticleLocation() const
+{
+	return reticleLocation;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,7 +116,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-	
+
 	//InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &APlayerCharacter::TouchStarted);
 	if (EnableTouchscreenMovement(InputComponent) == false)
 	{
@@ -115,10 +130,10 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	InputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	InputComponent->BindAxis("TurnRate", this, &APlayerCharacter::TurnAtRate);
-	InputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	InputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
+	InputComponent->BindAxis("Turn", this, &APlayerCharacter::MouseVertical);
+	//InputComponent->BindAxis("TurnRate", this, &APlayerCharacter::TurnAtRate);
+	InputComponent->BindAxis("LookUp", this, &APlayerCharacter::MouseHorizontal);
+	//InputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
 }
 
 void APlayerCharacter::OnFire()
@@ -129,7 +144,7 @@ void APlayerCharacter::OnFire()
 		const FRotator SpawnRotation = GetControlRotation();
 		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
 		const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
-		
+
 		UWorld* const World = GetWorld();
 
 		if (World != NULL)
@@ -266,6 +281,7 @@ void APlayerCharacter::TouchUpdate(const ETouchIndex::Type FingerIndex, const FV
 
 void APlayerCharacter::MoveForward(float Value)
 {
+	//Cast<APlayerController>(Controller)->DeprojectMousePositionToWorld()
 	if (Value != 0.0f)
 	{
 		// add movement in that direction
@@ -284,12 +300,24 @@ void APlayerCharacter::MoveRight(float Value)
 
 void APlayerCharacter::TurnAtRate(float Rate)
 {
+	return;
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
+void APlayerCharacter::MouseVertical(float rate)
+{
+	reticleLocation.Y += rate;
+}
+
+void APlayerCharacter::MouseHorizontal(float rate)
+{
+	reticleLocation.X += rate;
+}
+
 void APlayerCharacter::LookUpAtRate(float Rate)
 {
+	return;
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }

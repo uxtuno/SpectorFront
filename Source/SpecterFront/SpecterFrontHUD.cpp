@@ -3,8 +3,10 @@
 #include "SpecterFront.h"
 #include "SpecterFrontHUD.h"
 #include "Engine/Canvas.h"
+#include "Engine.h"
 #include "TextureResource.h"
 #include "CanvasItem.h"
+#include "PlayerCharacter.h"
 
 ASpecterFrontHUD::ASpecterFrontHUD()
 {
@@ -19,17 +21,19 @@ void ASpecterFrontHUD::DrawHUD()
 	Super::DrawHUD();
 
 	// Draw very simple crosshair
+	UWorld* const world = GetWorld();
 
-	// find center of the Canvas
-	const FVector2D Center(Canvas->ClipX * 0.5f, Canvas->ClipY * 0.5f);
+	//// find center of the Canvas
+	//const FVector2D Center(player->GetReticleLocation().X, player->GetReticleLocation().Y);
 
-	// offset by half the texture's dimensions so that the center of the texture aligns with the center of the Canvas
-	const FVector2D CrosshairDrawPosition( (Center.X),
-										   (Center.Y));
+	//// offset by half the texture's dimensions so that the center of the texture aligns with the center of the Canvas
+	//const FVector2D CrosshairDrawPosition( (Center.X),
+	//									   (Center.Y));
+	
 
 	// draw the crosshair
-	FCanvasTileItem TileItem( CrosshairDrawPosition, CrosshairTex->Resource, FLinearColor::White);
-	TileItem.BlendMode = SE_BLEND_Translucent;
-	Canvas->DrawItem( TileItem );
+	//FCanvasTileItem TileItem( CrosshairDrawPosition, CrosshairTex->Resource, FLinearColor::White);
+	//TileItem.BlendMode = SE_BLEND_Translucent;
+	//Canvas->DrawItem( TileItem );
 }
 

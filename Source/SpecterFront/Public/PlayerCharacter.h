@@ -29,8 +29,14 @@ class SPECTERFRONT_API APlayerCharacter : public AMyCharacter
 public:
 	APlayerCharacter();
 
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 	virtual void Tick(float deltaTime) override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void Move();
+
+	// レティクル座標を返す
+	FVector2D GetReticleLocation() const;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
@@ -74,6 +80,12 @@ protected:
 	* @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	*/
 	void TurnAtRate(float Rate);
+
+	// マウスの垂直移動
+	void MouseVertical(float rate);
+
+	// マウスの水平移動
+	void MouseHorizontal(float rate);
 
 	/**
 	* Called via input to turn look up/down at a given rate.
@@ -131,4 +143,8 @@ private:
 
 	// 発射入力をTick()で処理するために使用
 	bool isShootInput;
+
+	// レティクル座標
+	FVector2D reticleLocation;
+
 };
