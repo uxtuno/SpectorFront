@@ -36,7 +36,8 @@ public:
 		void Move();
 
 	// レティクル座標を返す
-	FVector2D GetReticleLocation() const;
+	UFUNCTION(BlueprintCallable, Category = "Character")
+		FVector2D GetReticleLocation() const;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)

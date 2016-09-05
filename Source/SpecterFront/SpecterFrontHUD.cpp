@@ -23,17 +23,31 @@ void ASpecterFrontHUD::DrawHUD()
 	// Draw very simple crosshair
 	UWorld* const world = GetWorld();
 
-	//// find center of the Canvas
-	//const FVector2D Center(player->GetReticleLocation().X, player->GetReticleLocation().Y);
+	APlayerCharacter* player = nullptr;
 
-	//// offset by half the texture's dimensions so that the center of the texture aligns with the center of the Canvas
-	//const FVector2D CrosshairDrawPosition( (Center.X),
-	//									   (Center.Y));
-	
+	// ƒJƒƒ‰İ’è
+	for (TActorIterator<APlayerCharacter> Itr(world); Itr; ++Itr)
+	{
+		if (Itr->ActorHasTag("Player"))
+		{
+			player = Cast<APlayerCharacter>(Itr->GetActorClass());
+			break;
+		}
+	}
+
+	if (player == nullptr)
+		return;
+
+	//// find center of the Canvas
+	const FVector2D Center(player->GetReticleLocation().X, player->GetReticleLocation().Y);
+
+	// offset by half the texture's dimensions so that the center of the texture aligns with the center of the Canvas
+	const FVector2D CrosshairDrawPosition( (Center.X),
+										   (Center.Y));
 
 	// draw the crosshair
-	//FCanvasTileItem TileItem( CrosshairDrawPosition, CrosshairTex->Resource, FLinearColor::White);
-	//TileItem.BlendMode = SE_BLEND_Translucent;
-	//Canvas->DrawItem( TileItem );
+	FCanvasTileItem TileItem( CrosshairDrawPosition, CrosshairTex->Resource, FLinearColor::White);
+	TileItem.BlendMode = SE_BLEND_Translucent;
+	Canvas->DrawItem( TileItem );
 }
 

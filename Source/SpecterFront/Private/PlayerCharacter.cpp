@@ -159,20 +159,24 @@ void APlayerCharacter::OnFire()
 			p.AddIgnoredActor(this);
 
 			bool isHit = World->LineTraceSingleByChannel(hit, start, end, c, p, rp);
-			if (isHit)
+			if (isHit && hit.Actor != nullptr)
 			{
 				//auto o = World->SpawnActor<ASpecterFrontProjectile>(ProjectileClass, hit.ImpactPoint, SpawnRotation);
 
-				auto component = Cast<UPrimitiveComponent>(hit.Actor->GetComponentByClass(UPrimitiveComponent::StaticClass()));
-				if ((hit.Actor != NULL) && (hit.Actor != this) && component->IsSimulatingPhysics())
+				if (hit.Actor != this)
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, FString(hit.Actor->GetName()));
-					FVector to = hit.ImpactPoint;
-					FVector from = FP_Gun->GetComponentLocation();
-					FVector vec = (to - from).GetSafeNormal();
-					GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, hit.Component->GetName());
-					hit.Component->SetSimulatePhysics(true);
-					hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
+					auto component = Cast<UPrimitiveComponent>(hit.Actor->GetComponentByClass(UPrimitiveComponent::StaticClass()));
+
+					if (component != nullptr && component->IsSimulatingPhysics())
+					{
+						GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, FString(hit.Actor->GetName()));
+						FVector to = hit.ImpactPoint;
+						FVector from = FP_Gun->GetComponentLocation();
+						FVector vec = (to - from).GetSafeNormal();
+						GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, hit.Component->GetName());
+						hit.Component->SetSimulatePhysics(true);
+						hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
+					}
 				}
 				else if (hit.Actor->ActorHasTag("Enemy"))
 				{
