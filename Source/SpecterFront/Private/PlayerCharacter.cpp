@@ -2,6 +2,7 @@
 
 #include "SpecterFront.h"
 #include "PlayerCharacter.h"
+#include "MyPlayerController.h"
 #include "BaseEnemy.h"
 
 #include "SpecterFrontProjectile.h"
@@ -29,26 +30,6 @@ APlayerCharacter::APlayerCharacter()
 	FirstPersonCameraComponent->RelativeLocation = FVector(-39.56f, 1.75f, 64.f); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
-	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
-	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
-	Mesh1P->SetOnlyOwnerSee(true);
-	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
-	Mesh1P->bCastDynamicShadow = false;
-	Mesh1P->CastShadow = false;
-	Mesh1P->RelativeRotation = FRotator(1.9f, -19.19f, 5.2f);
-	Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
-
-	// Create a gun mesh component
-	FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
-	FP_Gun->SetOnlyOwnerSee(true);			// only the owning player will see this mesh
-	FP_Gun->bCastDynamicShadow = false;
-	FP_Gun->CastShadow = false;
-	// FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
-
-	FP_MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleLocation"));
-	FP_MuzzleLocation->SetupAttachment(FP_Gun);
-	FP_MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));
-
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 30.0f, 10.0f);
 
@@ -61,8 +42,6 @@ void APlayerCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
-
-	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint")); //Attach gun mesh component to Skeleton, doing it here because the skelton is not yet created in the constructor
 
 	isShootInput = false;
 	shootIntervalCount = 0.0f;
@@ -142,50 +121,46 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 
 void APlayerCharacter::OnFire()
 {
-	// try and fire a projectile
-	if (ProjectileClass != NULL)
+	auto controller = Cast<AMyPlayerController>(GetController());
+	UWorld* const world = GetWorld();
+
+	if (world != nullptr)
 	{
-		const FRotator SpawnRotation = GetControlRotation();
-		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-		const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+		FVector worldLocation = FVector();
+		FVector worldDirection = FVector();
+		controller->DeprojectMousePositionToWorld(worldLocation, worldDirection);
 
-		UWorld* const World = GetWorld();
+		FHitResult hit;
+		FVector start = FVector(worldLocation);
+		FVector end = start + worldDirection * 3000.0f;
+		ECollisionChannel c = ECollisionChannel::ECC_WorldStatic;
+		FCollisionQueryParams p;
+		FCollisionResponseParams rp;
+		p.AddIgnoredActor(this);
 
-		if (World != NULL)
+		bool isHit = world->LineTraceSingleByChannel(hit, start, end, c, p, rp);
+		if (isHit && hit.Actor != nullptr)
 		{
-			// spawn the projectile at the muzzle
-			FHitResult hit;
-			FVector start = FVector(Cast<UCameraComponent>(GetComponentByClass(UCameraComponent::StaticClass()))->GetComponentLocation());
-			FVector end = start + Cast<UCameraComponent>(GetComponentByClass(UCameraComponent::StaticClass()))->GetForwardVector() * 3000.0f;
-			ECollisionChannel c = ECollisionChannel::ECC_WorldStatic;
-			FCollisionQueryParams p;
-			FCollisionResponseParams rp;
-			p.AddIgnoredActor(this);
+			//auto o = World->SpawnActor<ASpecterFrontProjectile>(ProjectileClass, hit.ImpactPoint, SpawnRotation);
 
-			bool isHit = World->LineTraceSingleByChannel(hit, start, end, c, p, rp);
-			if (isHit && hit.Actor != nullptr)
+			if (hit.Actor != this)
 			{
-				//auto o = World->SpawnActor<ASpecterFrontProjectile>(ProjectileClass, hit.ImpactPoint, SpawnRotation);
+				auto component = Cast<UPrimitiveComponent>(hit.Actor->GetComponentByClass(UPrimitiveComponent::StaticClass()));
 
-				if (hit.Actor != this)
+				if (component != nullptr && component->IsSimulatingPhysics())
 				{
-					auto component = Cast<UPrimitiveComponent>(hit.Actor->GetComponentByClass(UPrimitiveComponent::StaticClass()));
-
-					if (component != nullptr && component->IsSimulatingPhysics())
-					{
-						GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, FString(hit.Actor->GetName()));
-						FVector to = hit.ImpactPoint;
-						FVector from = FP_Gun->GetComponentLocation();
-						FVector vec = (to - from).GetSafeNormal();
-						GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, hit.Component->GetName());
-						hit.Component->SetSimulatePhysics(true);
-						hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
-					}
+					GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, FString(hit.Actor->GetName()));
+					FVector to = hit.ImpactPoint;
+					FVector from = worldLocation;
+					FVector vec = (to - from).GetSafeNormal();
+					GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, hit.Component->GetName());
+					hit.Component->SetSimulatePhysics(true);
+					hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
 				}
 				else if (hit.Actor->ActorHasTag("Enemy"))
 				{
 					FVector to = hit.ImpactPoint;
-					FVector from = FP_Gun->GetComponentLocation();
+					FVector from = worldLocation;
 					FVector vec = (to - from).GetSafeNormal();
 					TSubclassOf<UDamageType> const ValidDamageTypeClass = TSubclassOf<UDamageType>(UDamageType::StaticClass());
 					FDamageEvent DamageEvent(ValidDamageTypeClass);
@@ -202,17 +177,6 @@ void APlayerCharacter::OnFire()
 	if (FireSound != NULL)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// try and play a firing animation if specified
-	if (FireAnimation != NULL)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if (AnimInstance != NULL)
-		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
-		}
 	}
 
 }

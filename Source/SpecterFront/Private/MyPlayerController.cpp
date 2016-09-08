@@ -11,7 +11,7 @@ void AMyPlayerController::Tick(float deltaTime)
 	float y;
 	this->GetMousePosition(x, y);
 
-	auto player = Cast<APlayerCharacter>(this->GetControlledPawn());
+	auto player = Cast<APlayerCharacter>(this->GetPawn());
 
 	player->SetReticleLocation(FVector2D(x, y));
 }
