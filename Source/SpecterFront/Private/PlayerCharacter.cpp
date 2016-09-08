@@ -130,6 +130,9 @@ void APlayerCharacter::OnFire()
 		FVector worldDirection = FVector();
 		controller->DeprojectMousePositionToWorld(worldLocation, worldDirection);
 
+		if(controller == nullptr)
+			return;
+
 		FHitResult hit;
 		FVector start = FVector(worldLocation);
 		FVector end = start + worldDirection * 3000.0f;
