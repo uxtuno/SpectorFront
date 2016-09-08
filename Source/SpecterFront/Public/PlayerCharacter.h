@@ -11,8 +11,12 @@ class SPECTERFRONT_API APlayerCharacter : public AMyCharacter
 {
 	GENERATED_BODY()
 
-		/** Pawn mesh: 1st person view (arms; seen only by self) */
-		UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+private:
+
+	friend class AMyPlayerController;
+
+	/** Pawn mesh: 1st person view (arms; seen only by self) */
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class USkeletalMeshComponent* Mesh1P;
 
 	/** Gun mesh: 1st person view (seen only by self) */
@@ -138,6 +142,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
 		float shootInterval = 0.2f;
 
+	// 照準速度
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player")
+		float aimingSpeed;
+
 private:
 	// 発射可能時間までをカウントダウンする(0.0f以下なら発射可能)
 	float shootIntervalCount;
@@ -148,4 +156,10 @@ private:
 	// レティクル座標
 	FVector2D reticleLocation;
 
+	// ビューポートからマージン分縮めたエリアをエイミングエリアとする
+	const float aimingAreaMargin = 20.0f;
+
+	FVector2D viewPortSize;
+
+	void SetReticleLocation(FVector2D location);
 };

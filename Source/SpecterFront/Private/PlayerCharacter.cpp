@@ -52,6 +52,7 @@ APlayerCharacter::APlayerCharacter()
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 30.0f, 10.0f);
 
+	aimingSpeed = 60.0f;
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -66,7 +67,10 @@ void APlayerCharacter::BeginPlay()
 	isShootInput = false;
 	shootIntervalCount = 0.0f;
 
-	reticleLocation = FVector2D(0.5f, 0.5f);
+	// ビューポートのサイズを格納
+	GEngine->GameViewport->GetViewportSize(viewPortSize);
+
+	reticleLocation = viewPortSize / 2.0f;
 }
 
 void APlayerCharacter::Tick(float deltaTime)
@@ -130,9 +134,9 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	InputComponent->BindAxis("Turn", this, &APlayerCharacter::MouseVertical);
+	InputComponent->BindAxis("Turn", this, &APlayerCharacter::MouseHorizontal);
 	//InputComponent->BindAxis("TurnRate", this, &APlayerCharacter::TurnAtRate);
-	InputComponent->BindAxis("LookUp", this, &APlayerCharacter::MouseHorizontal);
+	InputComponent->BindAxis("LookUp", this, &APlayerCharacter::MouseVertical);
 	//InputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
 }
 
@@ -311,12 +315,39 @@ void APlayerCharacter::TurnAtRate(float Rate)
 
 void APlayerCharacter::MouseVertical(float rate)
 {
-	reticleLocation.Y += rate;
+	// ビューポートのサイズを格納
+	GEngine->GameViewport->GetViewportSize(viewPortSize);
+
+	reticleLocation.Y += rate * aimingSpeed * GWorld->GetDeltaSeconds();
+
+	// 範囲制限
+	if (reticleLocation.Y > viewPortSize.Y - aimingAreaMargin)
+	{
+		reticleLocation.Y = viewPortSize.Y - aimingAreaMargin;
+	}
+
+	if (reticleLocation.Y < aimingAreaMargin)
+	{
+		reticleLocation.Y = aimingAreaMargin;
+	}
 }
 
 void APlayerCharacter::MouseHorizontal(float rate)
 {
-	reticleLocation.X += rate;
+	// ビューポートのサイズを格納
+	GEngine->GameViewport->GetViewportSize(viewPortSize);
+
+	reticleLocation.X += rate * aimingSpeed * GWorld->GetDeltaSeconds();
+
+	if (reticleLocation.X > viewPortSize.X - aimingAreaMargin)
+	{
+		reticleLocation.X = viewPortSize.X - aimingAreaMargin;
+	}
+
+	if (reticleLocation.X < aimingAreaMargin)
+	{
+		reticleLocation.X = aimingAreaMargin;
+	}
 }
 
 void APlayerCharacter::LookUpAtRate(float Rate)
@@ -337,4 +368,33 @@ bool APlayerCharacter::EnableTouchscreenMovement(class UInputComponent* InputCom
 		InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &APlayerCharacter::TouchUpdate);
 	}
 	return bResult;
+}
+
+void APlayerCharacter::SetReticleLocation(FVector2D location)
+{
+	GEngine->GameViewport->GetViewportSize(viewPortSize);
+
+	reticleLocation.X = location.X;
+	reticleLocation.Y = location.Y;
+
+	// 範囲制限
+	if (reticleLocation.X > viewPortSize.X - aimingAreaMargin)
+	{
+		reticleLocation.X = viewPortSize.X - aimingAreaMargin;
+	}
+
+	if (reticleLocation.X < aimingAreaMargin)
+	{
+		reticleLocation.X = aimingAreaMargin;
+	}
+
+	if (reticleLocation.Y > viewPortSize.Y - aimingAreaMargin)
+	{
+		reticleLocation.Y = viewPortSize.Y - aimingAreaMargin;
+	}
+
+	if (reticleLocation.Y < aimingAreaMargin)
+	{
+		reticleLocation.Y = aimingAreaMargin;
+	}
 }

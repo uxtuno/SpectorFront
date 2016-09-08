@@ -30,6 +30,6 @@ public:
 		float hp;
 
 	// UŒ‚—Í
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 		float power;
 };
