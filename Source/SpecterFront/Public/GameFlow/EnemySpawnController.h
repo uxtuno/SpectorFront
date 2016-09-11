@@ -35,7 +35,7 @@ public: // UFUNCTION
 		void AddSpawnEnemy(ABaseEnemy* spawnEnemy);
 
 public: // UPROPERTY
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn = true))
 		TArray<AEnemySpawner*> spawnerList;
 
 	UPROPERTY(BlueprintReadOnly)
