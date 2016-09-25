@@ -7,7 +7,7 @@
 #include "EnemySpawner.generated.h"
 
 // 敵の生成が終了したことを通知する
-DECLARE_DYNAMIC_DELEGATE(FCompleteDelegate);
+DECLARE_DYNAMIC_DELEGATE(FFinishSpawnDelegate);
 
 /**
  * 敵の出現位置を指定するためのオブジェクト
@@ -20,11 +20,11 @@ class SPECTERFRONT_API AEnemySpawner : public ATargetPoint
 public:
 	// 生成。ブループリント側でオーバーライドする場合はオーバーライド元も呼ぶこと
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void Spawn(AEnemySpawnController* spawnController);
+		void BeginSpawn(AEnemySpawnController* spawnController);
 
-public:
+public: // UPROPERTY
 	// スポーンを管理するオブジェクト
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly)
 		class AEnemySpawnController* spawnController;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -33,8 +33,12 @@ public:
 	//UPROPERTY(BlueprintReadWrite)
 	//	FCompleteDelegate completeEvent;
 
+	// 無視可能。敵をすべて倒さなくても先へ進むことが出来る
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		bool isIgnoreble;
+
 public:
 	// 現在のスポーナーから制御を移す際に呼び出す
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
-		void Complete();
+		void FinishSpawn();
 };

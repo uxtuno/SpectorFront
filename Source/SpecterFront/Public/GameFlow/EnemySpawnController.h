@@ -6,6 +6,7 @@
 #include "EnemySpawner.h"
 #include "EnemySpawnController.generated.h"
 
+
 UCLASS()
 class SPECTERFRONT_API AEnemySpawnController : public AActor
 {
@@ -22,25 +23,30 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 public: // UFUNCTION
+	// 敵の生成制御を開始する
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void BeginSpawn(const FCompleteDelegate& completeEvent);
+		void BeginSpawnSequence(const FFinishSpawnDelegate& finishEvent);
+
+	// 生成終了を通知する
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
+		void FinishSpawnSequence();
 
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
-		void EndSpawn();
+		void OnEnemyDie(class ABaseEnemy* enemy);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void OnComplete();
+		void OnFinishSpawn();
 
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
 		void AddSpawnEnemy(ABaseEnemy* spawnEnemy);
 
 public: // UPROPERTY
 	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn = true))
-		TArray<AEnemySpawner*> spawnerList;
+		TArray<class AEnemySpawner*> spawnerList;
 
 	UPROPERTY(BlueprintReadOnly)
 		TArray<ABaseEnemy*> spawnEnemies;
 
 private:
-	FCompleteDelegate completeHandler;
+	FFinishSpawnDelegate completeHandler;
 };

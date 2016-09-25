@@ -6,7 +6,7 @@
 #include "EnemySpawnController.h"
 
 
-void AEnemySpawner::Spawn_Implementation(AEnemySpawnController* spawnController)
+void AEnemySpawner::BeginSpawn_Implementation(AEnemySpawnController* spawnController)
 {
 	this->spawnController = spawnController;
 	FVector location = GetActorLocation();
@@ -14,7 +14,8 @@ void AEnemySpawner::Spawn_Implementation(AEnemySpawnController* spawnController)
 	FActorSpawnParameters p;
 	p.bNoCollisionFail = true;
 	ABaseEnemy* enemy = Cast<ABaseEnemy>(GetWorld()->SpawnActor(spawnEnemy, &location, &rotation, p));
-	
+	enemy->SetSpawnController(spawnController);
+
 	if (spawnController == nullptr)
 	{
 		return;
@@ -24,8 +25,8 @@ void AEnemySpawner::Spawn_Implementation(AEnemySpawnController* spawnController)
 	this->spawnController->AddSpawnEnemy(enemy);
 }
 
-void AEnemySpawner::Complete()
+void AEnemySpawner::FinishSpawn()
 {
-	spawnController->OnComplete();
+	spawnController->OnFinishSpawn();
 }
 

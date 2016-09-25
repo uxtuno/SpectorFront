@@ -19,17 +19,22 @@ void AEnemySpawnController::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AEnemySpawnController::BeginSpawn_Implementation(const FCompleteDelegate& completeEvent)
+void AEnemySpawnController::BeginSpawnSequence_Implementation(const FFinishSpawnDelegate& finishEvent)
 {
-	completeHandler = completeEvent;
+	completeHandler = finishEvent;
 }
 
-void AEnemySpawnController::EndSpawn()
+void AEnemySpawnController::FinishSpawnSequence()
 {
 	completeHandler.ExecuteIfBound();
 }
 
-void AEnemySpawnController::OnComplete_Implementation()
+void AEnemySpawnController::OnEnemyDie(ABaseEnemy * enemy)
+{
+	spawnEnemies.Remove(enemy);
+}
+
+void AEnemySpawnController::OnFinishSpawn_Implementation()
 {
 }
 
