@@ -2,15 +2,16 @@
 
 #include "SpecterFront.h"
 #include "EnemySpawnController.h"
+#include "ActionPhaseController.h"
 #include "BaseEnemy.h"
 
 void ABaseEnemy::Wait(float tick)
 {
 }
 
-void ABaseEnemy::SetSpawnController(AEnemySpawnController* spawnController)
+void ABaseEnemy::SetSpawnController(AActionPhaseController* spawnController)
 {
-	this->spawnController = spawnController;
+	//this->spawnController = spawnController;
 }
 
 void ABaseEnemy::OnDamage_Implementation(float damage, AController* instigatedBy, AActor* damageCauser)
@@ -20,7 +21,7 @@ void ABaseEnemy::OnDamage_Implementation(float damage, AController* instigatedBy
 	{
 		hp = 0.0f;
 		OnDeath(instigatedBy, damageCauser);
-		spawnController->OnEnemyDie(this);
+		//spawnController->OnEnemyDie(this);
 	}
 }
 

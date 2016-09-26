@@ -2,18 +2,24 @@
 
 #include "SpecterFront.h"
 #include "BaseEnemy.h"
+#include "ActionPhaseController.h"
 #include "EnemySpawner.h"
 #include "EnemySpawnController.h"
 
 
-void AEnemySpawner::BeginSpawn_Implementation(AEnemySpawnController* spawnController)
+void AEnemySpawner::BeginSpawn_Implementation(AActionPhaseController* spawnController)
 {
+	if (spawnEnemyType == nullptr)
+	{
+		return;
+	}
+
 	this->spawnController = spawnController;
 	FVector location = GetActorLocation();
 	FRotator rotation = GetActorRotation();
 	FActorSpawnParameters p;
-	p.bNoCollisionFail = true;
-	ABaseEnemy* enemy = Cast<ABaseEnemy>(GetWorld()->SpawnActor(spawnEnemy, &location, &rotation, p));
+	p.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ABaseEnemy* enemy = Cast<ABaseEnemy>(GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p));
 	enemy->SetSpawnController(spawnController);
 
 	if (spawnController == nullptr)
@@ -22,7 +28,15 @@ void AEnemySpawner::BeginSpawn_Implementation(AEnemySpawnController* spawnContro
 	}
 
 	enemy->SpawnDefaultController();
-	this->spawnController->AddSpawnEnemy(enemy);
+
+	if (isIgnoreble)
+	{
+		this->spawnController->AddSpawnEnemy(enemy);
+	}
+	else
+	{
+		spawnedEnemies.Add(enemy);
+	}
 }
 
 void AEnemySpawner::FinishSpawn()

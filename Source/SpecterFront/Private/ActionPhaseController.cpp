@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpecterFront.h"
+#include "BaseEnemy.h"
 #include "ActionPhaseController.h"
 
 
@@ -26,8 +27,23 @@ void AActionPhaseController::Tick( float DeltaTime )
 
 }
 
-void AActionPhaseController::OnFinish_Implementation()
+void AActionPhaseController::Finish_Implementation()
 {
 
 }
+
+void AActionPhaseController::OnFinishSpawn_Implementation()
+{
+}
+
+void AActionPhaseController::AppendSpawnEnemies(TArray<ABaseEnemy*> enemies)
+{
+	managedEnemies.Append(enemies);
+}
+
+void AActionPhaseController::AddSpawnEnemy(ABaseEnemy * enemy)
+{
+	managedEnemies.Add(enemy);
+}
+
 

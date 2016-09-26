@@ -20,15 +20,19 @@ class SPECTERFRONT_API AEnemySpawner : public ATargetPoint
 public:
 	// 生成。ブループリント側でオーバーライドする場合はオーバーライド元も呼ぶこと
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void BeginSpawn(AEnemySpawnController* spawnController);
+		void BeginSpawn(AActionPhaseController* spawnController);
 
 public: // UPROPERTY
-	// スポーンを管理するオブジェクト
+	// スポーンを制御するオブジェクト
 	UPROPERTY(BlueprintReadOnly)
-		class AEnemySpawnController* spawnController;
+		AActionPhaseController* spawnController;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<ABaseEnemy> spawnEnemy;
+		TSubclassOf<ABaseEnemy> spawnEnemyType;
+
+	// 自身が管理する敵
+	UPROPERTY(BlueprintReadOnly)
+		TArray<ABaseEnemy*> spawnedEnemies;
 
 	//UPROPERTY(BlueprintReadWrite)
 	//	FCompleteDelegate completeEvent;

@@ -13,7 +13,7 @@ class SPECTERFRONT_API ABaseEnemy : public APawn, public IDamageListenerInterfac
 
 public:
 	virtual void Wait(float tick);
-	void SetSpawnController(class AEnemySpawnController* spawnController);
+	void SetSpawnController(class AActionPhaseController* spawnController);
 
 	// éÄñSçœÇ›Ç©
 	UFUNCTION(BlueprintCallable, Category = "Character")
@@ -35,5 +35,5 @@ public:
 		float power;
 
 	UPROPERTY(BlueprintReadOnly)
-		class AEnemySpawnController* spawnController;
+		AActionPhaseController* spawnController;
 };
