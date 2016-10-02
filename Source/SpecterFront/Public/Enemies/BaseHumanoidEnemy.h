@@ -3,12 +3,13 @@
 #pragma once
 
 #include "Enemies/BaseEnemy.h"
+#include "GameFramework/Character.h"
 #include "BaseHumanoidEnemy.generated.h"
 
 /**
  * 
  */
-UCLASS()
+UCLASS(abstract, Blueprintable, BlueprintType)
 class SPECTERFRONT_API ABaseHumanoidEnemy : public ABaseEnemy
 {
 	GENERATED_BODY()

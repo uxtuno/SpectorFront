@@ -31,12 +31,16 @@ public: // UFUNCTION
 
 	// スポーンした敵をActionPhaseの管理下に置く
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
-		void AppendSpawnEnemies(TArray<class ABaseEnemy*> enemies);
+		void AppendSpawnEnemies(const TArray<class ABaseEnemy*>& enemies);
 	// スポーンした敵をActionPhaseの管理下に置く
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
 		void AddSpawnEnemy(class ABaseEnemy* enemy);
 
+	// 生成した敵が死亡したときに呼び出される
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
+		void OnEnemyDie(class ABaseEnemy* enemy);
+
 public: // UPROPERTY
-	UPROPERTY(BlueprintReadOnly, Category = "EnemySpawn")
+	UPROPERTY(BlueprintReadOnly, Category = "EnemySpawn", meta = (BlueprintProtected))
 		TArray<class ABaseEnemy*> managedEnemies;
 };

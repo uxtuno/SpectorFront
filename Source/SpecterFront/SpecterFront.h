@@ -4,6 +4,6 @@
 #define __SPECTERFRONT_H__
 
 #include "EngineMinimal.h"
-
+#include "DebugLog.h"
 
 #endif

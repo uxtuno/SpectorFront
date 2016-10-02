@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,11 +6,11 @@
 #include "BaseEnemy.h"
 #include "EnemySpawner.generated.h"
 
-// “G‚Ì¶¬‚ªI—¹‚µ‚½‚±‚Æ‚ğ’Ê’m‚·‚é
+// æ•µã®ç”ŸæˆãŒçµ‚äº†ã—ãŸã“ã¨ã‚’é€šçŸ¥ã™ã‚‹
 DECLARE_DYNAMIC_DELEGATE(FFinishSpawnDelegate);
 
 /**
- * “G‚ÌoŒ»ˆÊ’u‚ğw’è‚·‚é‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg
+ * æ•µã®å‡ºç¾ä½ç½®ã‚’æŒ‡å®šã™ã‚‹ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
  */
 UCLASS(Blueprintable, BlueprintType)
 class SPECTERFRONT_API AEnemySpawner : public ATargetPoint
@@ -18,31 +18,45 @@ class SPECTERFRONT_API AEnemySpawner : public ATargetPoint
 	GENERATED_BODY()
 
 public:
-	// ¶¬Bƒuƒ‹[ƒvƒŠƒ“ƒg‘¤‚ÅƒI[ƒo[ƒ‰ƒCƒh‚·‚éê‡‚ÍƒI[ƒo[ƒ‰ƒCƒhŒ³‚àŒÄ‚Ô‚±‚Æ
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
+	// ç”Ÿæˆã€‚ãƒ–ãƒ«ãƒ¼ãƒ—ãƒªãƒ³ãƒˆå´ã§ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã™ã‚‹å ´åˆã¯ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰å…ƒã‚‚å‘¼ã¶ã“ã¨
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
 		void BeginSpawn(AActionPhaseController* spawnController);
 
-public: // UPROPERTY
-	// ƒXƒ|[ƒ“‚ğ§Œä‚·‚éƒIƒuƒWƒFƒNƒg
-	UPROPERTY(BlueprintReadOnly)
+private: // UPROPERTY
+	// ã‚¹ãƒãƒ¼ãƒ³ã‚’åˆ¶å¾¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		AActionPhaseController* spawnController;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<ABaseEnemy> spawnEnemyType;
 
-	// ©g‚ªŠÇ—‚·‚é“G
-	UPROPERTY(BlueprintReadOnly)
+	// è‡ªèº«ãŒç®¡ç†ã™ã‚‹æ•µ
+	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		TArray<ABaseEnemy*> spawnedEnemies;
 
-	//UPROPERTY(BlueprintReadWrite)
-	//	FCompleteDelegate completeEvent;
-
-	// –³‹‰Â”\B“G‚ğ‚·‚×‚Ä“|‚³‚È‚­‚Ä‚àæ‚Öi‚Ş‚±‚Æ‚ªo—ˆ‚é
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		bool isIgnoreble;
-
+	// ã‚¹ãƒãƒ¼ãƒ³çŠ¶æ…‹
+	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		bool isSpawing;
 public:
-	// Œ»İ‚ÌƒXƒ|[ƒi[‚©‚ç§Œä‚ğˆÚ‚·Û‚ÉŒÄ‚Ño‚·
+	// ç¾åœ¨ã®ã‚¹ãƒãƒ¼ãƒŠãƒ¼ã‹ã‚‰åˆ¶å¾¡ã‚’ç§»ã™éš›ã«å‘¼ã³å‡ºã™
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
 		void FinishSpawn();
+
+	// ç”Ÿæˆã—ãŸæ•µãŒæ­»äº¡ã—ãŸã¨ãã«å‘¼ã³å‡ºã•ã‚Œã‚‹
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
+		void OnEnemyDie(class ABaseEnemy* enemy);
+
+	// æ•µã‚’ç”Ÿæˆã™ã‚‹
+	// relativeLocation : è‡ªèº«ã‚’ä¸­å¿ƒã¨ã—ãŸç›¸å¯¾çš„ãªä½ç½®
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
+		void EnemySpawn(const FVector& relativeLocation);
+
+	// ç®¡ç†ä¸­ã®æ•µã®æ•°
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "EnemySpawn")
+		int32 GetSpawnedEnemyCount();
+
+protected:
+	// æ•µã®ç”Ÿæˆé–‹å§‹æ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚Blueprintã§ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¦å‡¦ç†ã‚’å®Ÿè£…ã™ã‚‹
+	UFUNCTION(BlueprintNativeEvent, Category = "EnemySpawn", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		void OnBeginSpawn();
 };
