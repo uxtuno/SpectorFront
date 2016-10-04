@@ -30,12 +30,16 @@ public: // UFUNCTION
 	UFUNCTION(BlueprintCallable, Category = "Character")
 		bool IsDead() const;
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Character", meta = (BlueprintProtected))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character", meta = (BlueprintProtected))
 		void OnDeath(AController* instigatedBy, AActor* damageCauser);
 
 	// IDamageListenerInterface‚ÌŽÀ‘•
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 		void OnDamage(float damage, AController* instigatedBy, AActor* damageCauser);
+
+	// ŽE‚·
+	UFUNCTION(BlueprintCallable, Category = "Character")
+		void Kill(AController * instigatedBy, AActor * damageCauser);
 
 private: // UPROPERTY
 

@@ -27,8 +27,18 @@ void ABaseEnemy::OnDamage_Implementation(float damage, AController* instigatedBy
 	{
 		hp = 0.0f;
 		OnDeath(instigatedBy, damageCauser);
-		notifiEnemyDieEventDispather.Broadcast(this);
 	}
+}
+
+void ABaseEnemy::OnDeath_Implementation(AController * instigatedBy, AActor * damageCauser)
+{
+	notifiEnemyDieEventDispather.Broadcast(this);
+}
+
+void ABaseEnemy::Kill(AController * instigatedBy, AActor * damageCauser)
+{
+	hp = 0.0f;
+	OnDeath(instigatedBy, damageCauser);
 }
 
 bool ABaseEnemy::IsDead() const
