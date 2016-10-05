@@ -48,8 +48,11 @@ public:
 
 	// 敵を生成する
 	// relativeLocation : 自身を中心とした相対的な位置
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
-		void EnemySpawn(const FVector& relativeLocation);
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
+		void EnemySpawnRelative(const FVector& relativeLocation);
+	// 敵を生成する
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
+		void EnemySpawn(const FVector& location);
 
 	// 管理中の敵の数
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "EnemySpawn")
