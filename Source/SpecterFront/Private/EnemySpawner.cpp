@@ -49,8 +49,30 @@ void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)
 	spawnedEnemies.Remove(enemy);
 }
 
-void AEnemySpawner::EnemySpawn_Implementation(const FVector & relativeLocation)
+void AEnemySpawner::EnemySpawnRelative(const FVector & relativeLocation)
 {
+	EnemySpawn(GetActorLocation() + relativeLocation);
+}
+
+void AEnemySpawner::EnemySpawn(const FVector & location)
+{
+	FRotator rotation = GetActorRotation();
+
+	FActorSpawnParameters p;
+	p.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ABaseEnemy* enemy = Cast<ABaseEnemy>(GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p));
+
+	if (enemy == nullptr)
+	{
+		return;
+	}
+
+	enemy->SpawnDefaultController();
+
+	FScriptDelegate enemyDieHandler;
+	enemyDieHandler.BindUFunction(this, "OnEnemyDie");
+	enemy->AddObserver(enemyDieHandler);
+	spawnedEnemies.Add(enemy);
 }
 
 int32 AEnemySpawner::GetSpawnedEnemyCount()
@@ -60,16 +82,5 @@ int32 AEnemySpawner::GetSpawnedEnemyCount()
 
 void AEnemySpawner::OnBeginSpawn_Implementation()
 {
-	FVector location = GetActorLocation();
-	FRotator rotation = GetActorRotation();
-	FActorSpawnParameters p;
-	p.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	ABaseEnemy* enemy = Cast<ABaseEnemy>(GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p));
-
-	enemy->SpawnDefaultController();
-
-	FScriptDelegate enemyDieHandler;
-	enemyDieHandler.BindUFunction(this, "OnEnemyDie");
-	enemy->AddObserver(enemyDieHandler);
-	spawnedEnemies.Add(enemy);
+	EnemySpawnRelative(FVector(0.0f, 0.0f, 0.0f));
 }
