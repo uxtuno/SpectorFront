@@ -7,41 +7,34 @@
 #include "EnemySpawnController.h"
 
 
-void AEnemySpawner::BeginSpawn(AActionPhaseController* spawnController)
+// 生成
+// owner : 生成元
+void AEnemySpawner::BeginSpawn_Implementation(AEnemySpawner* spawner)
 {
-	if (spawnEnemyType == nullptr)
+	// スポーン実行中
+	if (isSpawing)
 		return;
 
-	if (spawnController == nullptr)
-		return;
+	this->spawner = spawner;
 
-	this->spawnController = spawnController;
-	
 	isSpawing = true;
 	OnBeginSpawn();
 }
 
 void AEnemySpawner::FinishSpawn()
 {
-	if (spawnController == nullptr)
-	{
-		return;
-	}
-
-	spawnController->OnFinishSpawn();
-
 	// 全ての敵の通知先から自身を削除
 	for (auto enemy : spawnedEnemies)
 	{
 		enemy->RemoveObserver(this);
 	}
 
-	spawnController->AppendSpawnEnemies(spawnedEnemies);
+	if (spawner != nullptr)
+	{
+		spawner->TakeOverEnemies(spawnedEnemies);
+	}
 
 	isSpawing = false;
-
-	// 自分自身を破棄
-	Destroy();
 }
 
 void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)
@@ -56,6 +49,9 @@ void AEnemySpawner::EnemySpawnRelative(const FVector & relativeLocation)
 
 void AEnemySpawner::EnemySpawn(const FVector & location)
 {
+	if (spawnEnemyType == nullptr)
+		return;
+
 	FRotator rotation = GetActorRotation();
 
 	FActorSpawnParameters p;
@@ -84,3 +80,9 @@ void AEnemySpawner::OnBeginSpawn_Implementation()
 {
 	EnemySpawnRelative(FVector(0.0f, 0.0f, 0.0f));
 }
+
+void AEnemySpawner::TakeOverEnemies(TArray<ABaseEnemy*> enemies)
+{
+	spawnedEnemies.Append(enemies);
+}
+

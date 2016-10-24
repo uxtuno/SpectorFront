@@ -4,6 +4,7 @@
 
 #include "Engine/TargetPoint.h"
 #include "BaseEnemy.h"
+#include "SpawnableInterface.h"
 #include "EnemySpawner.generated.h"
 
 // 敵の生成が終了したことを通知する
@@ -13,19 +14,20 @@ DECLARE_DYNAMIC_DELEGATE(FFinishSpawnDelegate);
  * 敵の出現位置を指定するためのオブジェクト
  */
 UCLASS(Blueprintable, BlueprintType)
-class SPECTERFRONT_API AEnemySpawner : public ATargetPoint
+class SPECTERFRONT_API AEnemySpawner : public ATargetPoint, public ISpawnableInterface
 {
 	GENERATED_BODY()
 
 public:
-	// 生成。ブループリント側でオーバーライドする場合はオーバーライド元も呼ぶこと
-	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
-		void BeginSpawn(AActionPhaseController* spawnController);
+	// TODO : 生成
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
+		void BeginSpawn(class AEnemySpawner* spawner);
 
 private: // UPROPERTY
-	// スポーンを制御するオブジェクト
+
+	// TODO : 生成元
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		AActionPhaseController* spawnController;
+		AEnemySpawner* spawner;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<ABaseEnemy> spawnEnemyType;
@@ -62,4 +64,8 @@ protected:
 	// 敵の生成開始時に呼び出される。Blueprintでオーバーライドして処理を実装する
 	UFUNCTION(BlueprintNativeEvent, Category = "EnemySpawn", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		void OnBeginSpawn();
+
+	// 子Spawnerが生成した敵を引き継ぐ
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		void TakeOverEnemies(TArray<ABaseEnemy*> enemies);
 };
