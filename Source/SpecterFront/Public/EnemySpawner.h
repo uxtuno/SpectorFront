@@ -44,6 +44,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
 		void FinishSpawn();
 
+	// 現在のスポーナーから制御を移す際に呼び出す
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
+		void OnFinishSpawn();
+
 	// 生成した敵が死亡したときに呼び出される
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
 		void OnEnemyDie(class ABaseEnemy* enemy);

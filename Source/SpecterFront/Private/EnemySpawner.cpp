@@ -37,7 +37,14 @@ void AEnemySpawner::FinishSpawn()
 		spawner->TakeOverEnemies(spawnedEnemies);
 	}
 
+	OnFinishSpawn();
+
 	isSpawing = false;
+}
+
+void AEnemySpawner::OnFinishSpawn_Implementation()
+{
+
 }
 
 void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)

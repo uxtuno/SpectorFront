@@ -26,10 +26,6 @@ public: // UFUNCTION
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
 		void Finish();
 
-	// Spawnerからのスポーン終了通知を受け取る
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void OnFinishSpawn();
-
 	// スポーンした敵をActionPhaseの管理下に置く
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
 		void AppendSpawnEnemies(const TArray<class ABaseEnemy*>& enemies);

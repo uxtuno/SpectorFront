@@ -35,10 +35,6 @@ void AActionPhaseController::Finish_Implementation()
 	}
 }
 
-void AActionPhaseController::OnFinishSpawn_Implementation()
-{
-}
-
 void AActionPhaseController::AppendSpawnEnemies(const TArray<ABaseEnemy*>& enemies)
 {
 	managedEnemies.Append(enemies);
