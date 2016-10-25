@@ -3,10 +3,11 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "EnemySpawner.h"
 #include "ActionPhaseController.generated.h"
 
 UCLASS()
-class SPECTERFRONT_API AActionPhaseController : public AActor
+class SPECTERFRONT_API AActionPhaseController : public AEnemySpawner
 {
 	GENERATED_BODY()
 
