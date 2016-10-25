@@ -26,6 +26,9 @@ void AEnemySpawner::FinishSpawn()
 	// 全ての敵の通知先から自身を削除
 	for (auto enemy : spawnedEnemies)
 	{
+		if (enemy == nullptr)
+			continue;
+
 		enemy->RemoveObserver(this);
 	}
 
