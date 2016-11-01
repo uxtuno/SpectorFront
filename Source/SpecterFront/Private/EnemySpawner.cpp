@@ -1,21 +1,24 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpecterFront.h"
+#include "Core.h"
 #include "BaseEnemy.h"
 #include "ActionPhaseController.h"
 #include "EnemySpawner.h"
+
 #include "EnemySpawnController.h"
 
 
 // 生成
 // owner : 生成元
-void AEnemySpawner::BeginSpawn_Implementation(AEnemySpawner* spawner)
+void AEnemySpawner::BeginSpawn_Implementation(FFinishSpawn callback, const TArray<ABaseEnemy*>& spawnedEnemies)
 {
 	// スポーン実行中
 	if (isSpawing)
 		return;
 
-	this->spawner = spawner;
+	finishSpawnHandler = callback.finishSpawnDelegate;
+	this->spawnedEnemies = spawnedEnemies;
 
 	isSpawing = true;
 	OnBeginSpawn();
@@ -32,12 +35,16 @@ void AEnemySpawner::FinishSpawn()
 		enemy->RemoveObserver(this);
 	}
 
-	if (spawner != nullptr)
-	{
-		spawner->TakeOverEnemies(spawnedEnemies);
-	}
+	finishSpawnHandler.ExecuteIfBound();
+
+	OnFinishSpawn();
 
 	isSpawing = false;
+}
+
+void AEnemySpawner::OnFinishSpawn_Implementation()
+{
+
 }
 
 void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)
@@ -45,12 +52,12 @@ void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)
 	spawnedEnemies.Remove(enemy);
 }
 
-void AEnemySpawner::EnemySpawnRelative(const FVector & relativeLocation)
+void AEnemySpawner::EnemySpawnRelative(const FVector relativeLocation)
 {
-	EnemySpawn(GetActorLocation() + relativeLocation);
+ 	EnemySpawn(GetActorLocation() + relativeLocation);
 }
 
-void AEnemySpawner::EnemySpawn(const FVector & location)
+void AEnemySpawner::EnemySpawn(const FVector location)
 {
 	if (spawnEnemyType == nullptr)
 		return;
