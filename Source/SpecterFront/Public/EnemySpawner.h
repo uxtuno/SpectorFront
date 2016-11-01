@@ -7,8 +7,6 @@
 #include "SpawnableInterface.h"
 #include "EnemySpawner.generated.h"
 
-// 敵の生成が終了したことを通知する
-DECLARE_DYNAMIC_DELEGATE(FFinishSpawnDelegate);
 
 /**
  * 敵の出現位置を指定するためのオブジェクト
@@ -21,7 +19,7 @@ class SPECTERFRONT_API AEnemySpawner : public ATargetPoint, public ISpawnableInt
 public:
 	// TODO : 生成
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void BeginSpawn(class AEnemySpawner* spawner);
+		void BeginSpawn(FFinishSpawn callback, const TArray<ABaseEnemy*>& spawnEnemies);
 
 private: // UPROPERTY
 
@@ -40,11 +38,11 @@ private: // UPROPERTY
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		bool isSpawing;
 public:
-	// 現在のスポーナーから制御を移す際に呼び出す
+	// 現在のスポーナーから制御を戻す際に呼び出す
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
 		void FinishSpawn();
 
-	// 現在のスポーナーから制御を移す際に呼び出す
+	// 現在のスポーナーから制御を移す際に呼び出される
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
 		void OnFinishSpawn();
 
@@ -55,10 +53,10 @@ public:
 	// 敵を生成する
 	// relativeLocation : 自身を中心とした相対的な位置
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
-		void EnemySpawnRelative(const FVector& relativeLocation);
+		void EnemySpawnRelative(const FVector relativeLocation);
 	// 敵を生成する
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
-		void EnemySpawn(const FVector& location);
+		void EnemySpawn(const FVector location);
 
 	// 管理中の敵の数
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "EnemySpawn")
@@ -72,4 +70,9 @@ protected:
 	// 子Spawnerが生成した敵を引き継ぐ
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		void TakeOverEnemies(TArray<ABaseEnemy*> enemies);
+
+private:
+	// 制御を終了するときに呼び出すデリゲート
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		FFinishSpawnDelegate finishSpawnHandler;
 };
