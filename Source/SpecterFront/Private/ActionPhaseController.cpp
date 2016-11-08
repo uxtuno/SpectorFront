@@ -29,29 +29,8 @@ void AActionPhaseController::Tick( float DeltaTime )
 
 void AActionPhaseController::Finish_Implementation()
 {
-	for (auto enemy : managedEnemies)
+	for (auto enemy : spawnedEnemies->enemies)
 	{
 		enemy->RemoveObserver(this);
 	}
-}
-
-void AActionPhaseController::AppendSpawnEnemies(const TArray<ABaseEnemy*>& enemies)
-{
-	managedEnemies.Append(enemies);
-	for (auto enemy : managedEnemies)
-	{
-		FScriptDelegate observer;
-		observer.BindUFunction(this, "OnEnemyDie");
-		enemy->AddObserver(observer);
-	}
-}
-
-void AActionPhaseController::AddSpawnEnemy(ABaseEnemy * enemy)
-{
-	managedEnemies.Add(enemy);
-}
-
-void AActionPhaseController::OnEnemyDie_Implementation(ABaseEnemy * enemy)
-{
-	managedEnemies.Remove(enemy);
 }

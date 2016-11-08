@@ -39,5 +39,5 @@ public:
 
 	// ÉXÉ|Å[Éì
 	UFUNCTION(BlueprintImplementableEvent)
-		void BeginSpawn(FFinishSpawn spawner, const TArray<ABaseEnemy*>& spawnEnemies);
+		void BeginSpawn(FFinishSpawn spawner, class UEnemyContainer* spawnEnemies);
 };
