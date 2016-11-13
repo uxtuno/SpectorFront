@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpecterFront.h"
-#include "EnemyContainer.h"
+#include "MyDataTable.h"
 
-void UEnemyContainer::AddEnemy(ABaseEnemy * enemy)
-{
-}
+
+
+

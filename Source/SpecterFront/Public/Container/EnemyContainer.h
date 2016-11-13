@@ -19,4 +19,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		TArray<ABaseEnemy*> enemies;
 
+private: // UFUNCTION
+	// “G‚ð’Ç‰Á
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivteAccess = "true"))
+		void AddEnemy(ABaseEnemy* enemy);
 };

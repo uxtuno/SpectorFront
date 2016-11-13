@@ -1,8 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpecterFront.h"
-#include "EnemyContainer.h"
+#include "EnemyInterface.h"
 
-void UEnemyContainer::AddEnemy(ABaseEnemy * enemy)
+EnemyInterface::EnemyInterface()
+{
+}
+
+EnemyInterface::~EnemyInterface()
 {
 }
