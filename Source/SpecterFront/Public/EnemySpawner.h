@@ -5,6 +5,7 @@
 #include "Engine/TargetPoint.h"
 #include "BaseEnemy.h"
 #include "SpawnableInterface.h"
+#include "Container/EnemyContainer.h"
 #include "EnemySpawner.generated.h"
 
 
@@ -17,9 +18,11 @@ class SPECTERFRONT_API AEnemySpawner : public ATargetPoint, public ISpawnableInt
 	GENERATED_BODY()
 
 public:
+	virtual void BeginPlay() override;
+
 	// TODO : 生成
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void BeginSpawn(FFinishSpawn callback, const TArray<ABaseEnemy*>& spawnEnemies);
+		void BeginSpawn(FFinishSpawn callback, UEnemyContainer* spawnedEnemies);
 
 private: // UPROPERTY
 
@@ -30,14 +33,14 @@ private: // UPROPERTY
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<ABaseEnemy> spawnEnemyType;
 
-	// 自身が管理する敵
-	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
-		TArray<ABaseEnemy*> spawnedEnemies;
-
 	// スポーン状態
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		bool isSpawing;
 public:
+	// 自身が管理する敵
+	UPROPERTY(BlueprintReadOnly)
+		UEnemyContainer* spawnedEnemies;
+
 	// 現在のスポーナーから制御を戻す際に呼び出す
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
 		void FinishSpawn();
@@ -60,7 +63,7 @@ public:
 
 	// 管理中の敵の数
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "EnemySpawn")
-		int32 GetSpawnedEnemyCount();
+		int32 GetSpawnedEnemyCount() const;
 
 protected:
 	// 敵の生成開始時に呼び出される。Blueprintでオーバーライドして処理を実装する

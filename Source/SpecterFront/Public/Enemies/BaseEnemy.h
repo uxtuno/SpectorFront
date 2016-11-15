@@ -4,13 +4,14 @@
 
 #include "GameFramework/Character.h"
 #include "DamageListenerInterface.h"
+#include "EnemyInterface.h"
 #include "BaseEnemy.generated.h"
 
 // “G‚ªŽ€–S‚µ‚½‚Æ‚«‚É’Ê’m‚·‚é
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotifiEnemyDieDelegate, class ABaseEnemy*, enemy);
 
 UCLASS(abstract, Blueprintable, BlueprintType)
-class SPECTERFRONT_API ABaseEnemy : public APawn, public IDamageListenerInterface
+class SPECTERFRONT_API ABaseEnemy : public APawn, public IDamageListenerInterface, public IEnemyInterface
 {
 	GENERATED_BODY()
 

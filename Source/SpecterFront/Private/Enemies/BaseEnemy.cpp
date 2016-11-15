@@ -12,7 +12,7 @@ void ABaseEnemy::Wait(float tick)
 
 void ABaseEnemy::AddObserver(const FScriptDelegate& observer)
 {
-	notifiEnemyDieEventDispather.AddUnique(observer);
+	notifiEnemyDieEventDispather.Add(observer);
 }
 
 void ABaseEnemy::RemoveObserver(UObject* const observer)

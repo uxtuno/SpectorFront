@@ -11,29 +11,40 @@
 
 // 生成
 // owner : 生成元
-void AEnemySpawner::BeginSpawn_Implementation(FFinishSpawn callback, const TArray<ABaseEnemy*>& spawnedEnemies)
+void AEnemySpawner::BeginSpawn_Implementation(FFinishSpawn callback, UEnemyContainer* spawnedEnemies)
 {
 	// スポーン実行中
 	if (isSpawing)
 		return;
 
 	finishSpawnHandler = callback.finishSpawnDelegate;
-	this->spawnedEnemies = spawnedEnemies;
+
+	if (spawnedEnemies != nullptr)
+	{
+		this->spawnedEnemies = spawnedEnemies;
+	}
 
 	isSpawing = true;
 	OnBeginSpawn();
 }
 
+void AEnemySpawner::BeginPlay()
+{
+	Super::BeginPlay();
+
+	spawnedEnemies = NewObject<UEnemyContainer>();
+}
+
 void AEnemySpawner::FinishSpawn()
 {
-	// 全ての敵の通知先から自身を削除
-	for (auto enemy : spawnedEnemies)
-	{
-		if (enemy == nullptr)
-			continue;
+	//// 全ての敵の通知先から自身を削除
+	//for (auto enemy : spawnedEnemies->enemies)
+	//{
+	//	if (enemy == nullptr)
+	//		continue;
 
-		enemy->RemoveObserver(this);
-	}
+	//	enemy->RemoveObserver(this);
+	//}
 
 	finishSpawnHandler.ExecuteIfBound();
 
@@ -49,7 +60,8 @@ void AEnemySpawner::OnFinishSpawn_Implementation()
 
 void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)
 {
-	spawnedEnemies.Remove(enemy);
+	UE_LOG(LogTemp, Warning, TEXT("enemies : %d"), spawnedEnemies->enemies.Num());
+	spawnedEnemies->enemies.Remove(enemy);
 }
 
 void AEnemySpawner::EnemySpawnRelative(const FVector relativeLocation)
@@ -78,12 +90,12 @@ void AEnemySpawner::EnemySpawn(const FVector location)
 	FScriptDelegate enemyDieHandler;
 	enemyDieHandler.BindUFunction(this, "OnEnemyDie");
 	enemy->AddObserver(enemyDieHandler);
-	spawnedEnemies.Add(enemy);
+	spawnedEnemies->enemies.Add(enemy);
 }
 
-int32 AEnemySpawner::GetSpawnedEnemyCount()
+int32 AEnemySpawner::GetSpawnedEnemyCount() const
 {
-	return spawnedEnemies.Num();
+	return spawnedEnemies->enemies.Num();
 }
 
 void AEnemySpawner::OnBeginSpawn_Implementation()
@@ -93,6 +105,6 @@ void AEnemySpawner::OnBeginSpawn_Implementation()
 
 void AEnemySpawner::TakeOverEnemies(TArray<ABaseEnemy*> enemies)
 {
-	spawnedEnemies.Append(enemies);
+	spawnedEnemies->enemies.Append(enemies);
 }
 
