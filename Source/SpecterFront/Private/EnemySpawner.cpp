@@ -11,7 +11,7 @@
 
 // 生成
 // owner : 生成元
-void AEnemySpawner::BeginSpawn_Implementation(FFinishSpawn callback, UEnemyContainer* spawnedEnemies)
+void AEnemySpawner::Begin_Implementation(FFinishSpawn callback, UEnemyContainer* spawnedEnemies)
 {
 	// スポーン実行中
 	if (isSpawing)
@@ -37,25 +37,11 @@ void AEnemySpawner::BeginPlay()
 
 void AEnemySpawner::FinishSpawn()
 {
-	//// 全ての敵の通知先から自身を削除
-	//for (auto enemy : spawnedEnemies->enemies)
-	//{
-	//	if (enemy == nullptr)
-	//		continue;
-
-	//	enemy->RemoveObserver(this);
-	//}
-
 	finishSpawnHandler.ExecuteIfBound();
 
 	OnFinishSpawn();
 
 	isSpawing = false;
-}
-
-void AEnemySpawner::OnFinishSpawn_Implementation()
-{
-
 }
 
 void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)

@@ -35,6 +35,14 @@ void ABaseEnemy::OnDeath_Implementation(AController * instigatedBy, AActor * dam
 	notifiEnemyDieEventDispather.Broadcast(this);
 }
 
+void ABaseEnemy::MoveTo_Implementation()
+{
+}
+
+void ABaseEnemy::Appearance_Implementation()
+{
+}
+
 void ABaseEnemy::Kill(AController * instigatedBy, AActor * damageCauser)
 {
 	hp = 0.0f;

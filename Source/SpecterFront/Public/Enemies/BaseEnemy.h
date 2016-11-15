@@ -38,6 +38,14 @@ public: // UFUNCTION
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 		void OnDamage(float damage, AController* instigatedBy, AActor* damageCauser);
 
+	//IEnemyInterface‚ÌŽÀ‘•
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void MoveTo();
+
+	//IEnemyInterface‚ÌŽÀ‘•
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void Appearance();
+
 	// ŽE‚·
 	UFUNCTION(BlueprintCallable, Category = "Character")
 		void Kill(AController * instigatedBy, AActor * damageCauser);

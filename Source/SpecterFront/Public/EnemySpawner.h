@@ -6,6 +6,7 @@
 #include "BaseEnemy.h"
 #include "SpawnableInterface.h"
 #include "Container/EnemyContainer.h"
+#include "SpawnerInterface.h"
 #include "EnemySpawner.generated.h"
 
 
@@ -13,7 +14,7 @@
  * 敵の出現位置を指定するためのオブジェクト
  */
 UCLASS(Blueprintable, BlueprintType)
-class SPECTERFRONT_API AEnemySpawner : public ATargetPoint, public ISpawnableInterface
+class SPECTERFRONT_API AEnemySpawner : public ATargetPoint, public ISpawnerInterface
 {
 	GENERATED_BODY()
 
@@ -22,7 +23,7 @@ public:
 
 	// TODO : 生成
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void BeginSpawn(FFinishSpawn callback, UEnemyContainer* spawnedEnemies);
+		void Begin(FFinishSpawn callback, UEnemyContainer* spawnedEnemies);
 
 private: // UPROPERTY
 
@@ -46,7 +47,7 @@ public:
 		void FinishSpawn();
 
 	// 現在のスポーナーから制御を移す際に呼び出される
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "EnemySpawn")
 		void OnFinishSpawn();
 
 	// 生成した敵が死亡したときに呼び出される
