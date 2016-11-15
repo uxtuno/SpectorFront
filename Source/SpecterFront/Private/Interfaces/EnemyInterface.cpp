@@ -3,10 +3,7 @@
 #include "SpecterFront.h"
 #include "EnemyInterface.h"
 
-EnemyInterface::EnemyInterface()
-{
-}
-
-EnemyInterface::~EnemyInterface()
+UEnemyInterface::UEnemyInterface(const class FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 }
