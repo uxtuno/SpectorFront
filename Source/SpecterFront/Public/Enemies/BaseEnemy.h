@@ -22,13 +22,15 @@ public:
 	//IEnemyInterface‚ÌÀ‘•
 	// €–S‚É’Ê’m‚·‚éæ‚ğ“o˜^
 	// €–S‚Éobserver‚ÉŠÜ‚Ü‚ê‚éOnEnemyDie()‚ğŒÄ‚Ño‚·
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
 		void AddObserver(UObject* observer);
+		virtual void AddObserver_Implementation(UObject* observer) override;
 
 	//IEnemyInterface‚ÌÀ‘•
 	// ’Ê’mæ‚ğíœ
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
 		void RemoveObserver(UObject* observer);
+		virtual void RemoveObserver_Implementation(UObject* observer) override;
 
 public: // UFUNCTION
 

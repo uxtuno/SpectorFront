@@ -24,10 +24,10 @@ public:
 		void Appearance();
 
 	// €–S‚É’Ê’m‚·‚éæ‚ğ“o˜^
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
 		void AddObserver(UObject* observer);
 
 	// ’Ê’mæ‚ğíœ
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
 		void RemoveObserver(UObject* observer);
 };
