@@ -19,8 +19,11 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		TArray<AActor*> actors;
 
-private: // UFUNCTION
+	// óvëfêî
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
+		int32 GetLength() const;
+
 	// ìGÇí«â¡
-	UFUNCTION(BlueprintCallable, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivteAccess = "true"))
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
 		void AddActor(AActor* actor);
 };

@@ -4,6 +4,11 @@
 #include "ActorContainer.h"
 
 
+int32 UActorContainer::GetLength() const
+{
+	return actors.Num();
+}
+
 void UActorContainer::AddActor(AActor* actor)
 {
 	actors.Add(actor);

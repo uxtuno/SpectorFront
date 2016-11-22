@@ -28,14 +28,6 @@ private: // UPROPERTY
 
 public:
 
-	// 現在のスポーナーから制御を移す際に呼び出される
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "EnemySpawn")
-		void OnFinishSpawn();
-
-	// 生成した敵が死亡したときに呼び出される
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
-		void OnEnemyDie(class ABaseEnemy* enemy);
-
 	// 敵を生成する
 	// relativeLocation : 自身を中心とした相対的な位置
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
@@ -47,18 +39,4 @@ public:
 	// 管理中の敵の数
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "EnemySpawn")
 		int32 GetSpawnedEnemyCount() const;
-
-protected:
-	// 敵の生成開始時に呼び出される。Blueprintでオーバーライドして処理を実装する
-	UFUNCTION(BlueprintNativeEvent, Category = "EnemySpawn", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
-		void OnBeginSpawn();
-
-	// 子Spawnerが生成した敵を引き継ぐ
-	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
-		void TakeOverEnemies(TArray<ABaseEnemy*> enemies);
-
-private:
-	// 制御を終了するときに呼び出すデリゲート
-	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		FFinishSpawnDelegate finishSpawnHandler;
 };

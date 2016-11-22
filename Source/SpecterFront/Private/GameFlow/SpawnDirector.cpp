@@ -12,8 +12,3 @@ ASpawnDirector::ASpawnDirector()
 
 }
 
-
-void ASpawnDirector::OnBeginSpawn_Implementation()
-{
-}
-

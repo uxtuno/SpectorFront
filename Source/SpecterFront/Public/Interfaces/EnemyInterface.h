@@ -22,4 +22,12 @@ public:
 	// oŒ»‚ÉŒÄ‚Ô
 	UFUNCTION(BlueprintImplementableEvent)
 		void Appearance();
+
+	// €–S‚É’Ê’m‚·‚éæ‚ğ“o˜^
+	UFUNCTION(BlueprintImplementableEvent)
+		void AddObserver(UObject* observer);
+
+	// ’Ê’mæ‚ğíœ
+	UFUNCTION(BlueprintImplementableEvent)
+		void RemoveObserver(UObject* observer);
 };

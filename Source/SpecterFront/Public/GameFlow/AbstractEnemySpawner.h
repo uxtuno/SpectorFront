@@ -39,24 +39,50 @@ public:
 
 	// スポーンを開始する
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "EnemySpawner")
-		void TriggerSpawn(FFinishSpawn callback, UActorContainer* container);
+		void TriggerSpawn(AAbstractEnemySpawner* parent, FFinishSpawn callback, UActorContainer* allEnemies);
 
-	// スポーン開始時に呼ばれる
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "EnemySpawner")
-		void BeginSpawn();
+	// 生成した敵の数を取得
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
+		int32 GetSpawnedEnemyCount() const;
 
 protected:
+	// 生成した敵が死亡したときに呼び出される
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
+		void OnEnemyDie(TScriptInterface<IEnemyInterface>& enemy);
+
 	// スポーン終了を宣言し、再びスポーン開始を可能とする
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
 		void Finish();
 
+	// スポーン開始時に呼ばれる
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		void BeginSpawn();
+
 	// スポーン終了時に呼ばれる
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "EnemySpawner")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		void FinishSpawn();
+
+	// 敵の追加を子から親へ通知
+	void NotifiAddEnemy();
+
+	// 敵の消滅を子から親へ通知
+	void NotifiRemoveEnemy();
+
+	// シーン上に存在するすべての敵
+	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		class UActorContainer* allEnemies;
+
+	// 親スポーナー
+	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		AAbstractEnemySpawner* parent;
 
 	// 自身が管理する敵
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
-		class UActorContainer* spawnedEnemies;
+		TArray<TScriptInterface<IEnemyInterface>> spawnedEnemies;
+
+	// 全滅させることで強制的に先へ進む
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EnemySpawner")
+		bool IsAnnihilationFinish;
 
 private:
 	// スポーン中、このフラグがtrueの間は、TriggerSpawnを呼ばれてもスポーンが行われない
@@ -64,5 +90,9 @@ private:
 		bool isSpawning;
 
 	// スポーン終了を通知する
-	FFinishSpawn finishSpawnHandler;
+	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		FFinishSpawn finishSpawnHandler;
+
+	// 管理中の敵の数
+	int32 managedEnemyCount;
 };

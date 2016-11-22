@@ -8,7 +8,7 @@
 #include "BaseEnemy.generated.h"
 
 // “G‚ª€–S‚µ‚½‚Æ‚«‚É’Ê’m‚·‚é
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotifiEnemyDieDelegate, class ABaseEnemy*, enemy);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotifiEnemyDieDelegate, class TScriptInterface<IEnemyInterface>, enemy);
 
 UCLASS(abstract, Blueprintable, BlueprintType)
 class SPECTERFRONT_API ABaseEnemy : public APawn, public IDamageListenerInterface, public IEnemyInterface
@@ -19,11 +19,16 @@ public:
 
 	virtual void Wait(float tick);
 
+	//IEnemyInterface‚ÌÀ‘•
 	// €–S‚É’Ê’m‚·‚éæ‚ğ“o˜^
-	void AddObserver(const FScriptDelegate& observer);
+	// €–S‚Éobserver‚ÉŠÜ‚Ü‚ê‚éOnEnemyDie()‚ğŒÄ‚Ño‚·
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void AddObserver(UObject* observer);
 
+	//IEnemyInterface‚ÌÀ‘•
 	// ’Ê’mæ‚ğíœ
-	void RemoveObserver(UObject* const observer);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void RemoveObserver(UObject* observer);
 
 public: // UFUNCTION
 

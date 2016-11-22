@@ -12,14 +12,6 @@
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-
-	spawnedEnemies = NewObject<UActorContainer>();
-}
-
-void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)
-{
-	UE_LOG(LogTemp, Warning, TEXT("enemies : %d"), spawnedEnemies->actors.Num());
-	spawnedEnemies->actors.Remove(enemy);
 }
 
 void AEnemySpawner::EnemySpawnRelative(const FVector relativeLocation)
@@ -36,33 +28,21 @@ void AEnemySpawner::EnemySpawn(const FVector location)
 
 	FActorSpawnParameters p;
 	p.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	ABaseEnemy* enemy = Cast<ABaseEnemy>(GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p));
+	IEnemyInterface* enemy = Cast<IEnemyInterface>(GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p));
 
 	if (enemy == nullptr)
 	{
 		return;
 	}
 
-	enemy->SpawnDefaultController();
+	Cast<APawn>(enemy)->SpawnDefaultController();
 
-	FScriptDelegate enemyDieHandler;
-	enemyDieHandler.BindUFunction(this, "OnEnemyDie");
-	enemy->AddObserver(enemyDieHandler);
-	spawnedEnemies->actors.Add(enemy);
+	enemy->AddObserver(this);
+	NotifiAddEnemy();
 }
 
 int32 AEnemySpawner::GetSpawnedEnemyCount() const
 {
-	return spawnedEnemies->actors.Num();
-}
-
-void AEnemySpawner::OnBeginSpawn_Implementation()
-{
-	EnemySpawnRelative(FVector(0.0f, 0.0f, 0.0f));
-}
-
-void AEnemySpawner::TakeOverEnemies(TArray<ABaseEnemy*> enemies)
-{
-	spawnedEnemies->actors.Append(enemies);
+	return spawnedEnemies.Num();
 }
 
