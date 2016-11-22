@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpecterFront.h"
-#include "EnemyContainer.h"
+#include "ActorContainer.h"
 
-void UEnemyContainer::AddEnemy(ABaseEnemy * enemy)
+
+void UActorContainer::AddActor(AActor* actor)
 {
+	actors.Add(actor);
 }

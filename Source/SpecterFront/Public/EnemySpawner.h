@@ -3,9 +3,9 @@
 #pragma once
 
 #include "Engine/TargetPoint.h"
+#include "AbstractEnemySpawner.h"
 #include "BaseEnemy.h"
-#include "SpawnableInterface.h"
-#include "Container/EnemyContainer.h"
+#include "Container/ActorContainer.h"
 #include "SpawnerInterface.h"
 #include "EnemySpawner.generated.h"
 
@@ -14,37 +14,19 @@
  * 敵の出現位置を指定するためのオブジェクト
  */
 UCLASS(Blueprintable, BlueprintType)
-class SPECTERFRONT_API AEnemySpawner : public ATargetPoint, public ISpawnerInterface
+class SPECTERFRONT_API AEnemySpawner : public AAbstractEnemySpawner
 {
 	GENERATED_BODY()
 
 public:
 	virtual void BeginPlay() override;
 
-	// TODO : 生成
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn")
-		void Begin(FFinishSpawn callback, UEnemyContainer* spawnedEnemies);
-
 private: // UPROPERTY
-
-	// TODO : 生成元
-	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		AEnemySpawner* spawner;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<ABaseEnemy> spawnEnemyType;
 
-	// スポーン状態
-	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
-		bool isSpawing;
 public:
-	// 自身が管理する敵
-	UPROPERTY(BlueprintReadOnly)
-		UEnemyContainer* spawnedEnemies;
-
-	// 現在のスポーナーから制御を戻す際に呼び出す
-	UFUNCTION(BlueprintCallable, Category = "EnemySpawn")
-		void FinishSpawn();
 
 	// 現在のスポーナーから制御を移す際に呼び出される
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "EnemySpawn")

@@ -20,5 +20,5 @@ class ISpawnerInterface
 public:
 	// ê∂ê¨äJén
 	UFUNCTION(BlueprintImplementableEvent)
-		void Begen(FFinishSpawn callBack, UEnemyContainer* spawnedEnemies);
+		void Begen();
 };

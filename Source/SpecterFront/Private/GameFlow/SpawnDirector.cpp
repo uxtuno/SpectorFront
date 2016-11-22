@@ -13,25 +13,6 @@ ASpawnDirector::ASpawnDirector()
 }
 
 
-// 生成
-// owner : 生成元
-void ASpawnDirector::Begin_Implementation(FFinishSpawn callback, UEnemyContainer* spawnedEnemies)
-{
-	// スポーン実行中
-	if (isSpawing)
-		return;
-
-	finishSpawnHandler = callback.finishSpawnDelegate;
-
-	if (spawnedEnemies != nullptr)
-	{
-		this->spawnedEnemies = spawnedEnemies;
-	}
-
-	isSpawing = true;
-	OnBeginSpawn();
-}
-
 void ASpawnDirector::OnBeginSpawn_Implementation()
 {
 }

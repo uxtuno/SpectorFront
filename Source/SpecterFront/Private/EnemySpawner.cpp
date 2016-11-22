@@ -9,45 +9,17 @@
 #include "EnemySpawnController.h"
 
 
-// 生成
-// owner : 生成元
-void AEnemySpawner::Begin_Implementation(FFinishSpawn callback, UEnemyContainer* spawnedEnemies)
-{
-	// スポーン実行中
-	if (isSpawing)
-		return;
-
-	finishSpawnHandler = callback.finishSpawnDelegate;
-
-	if (spawnedEnemies != nullptr)
-	{
-		this->spawnedEnemies = spawnedEnemies;
-	}
-
-	isSpawing = true;
-	OnBeginSpawn();
-}
-
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	spawnedEnemies = NewObject<UEnemyContainer>();
-}
-
-void AEnemySpawner::FinishSpawn()
-{
-	finishSpawnHandler.ExecuteIfBound();
-
-	OnFinishSpawn();
-
-	isSpawing = false;
+	spawnedEnemies = NewObject<UActorContainer>();
 }
 
 void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)
 {
-	UE_LOG(LogTemp, Warning, TEXT("enemies : %d"), spawnedEnemies->enemies.Num());
-	spawnedEnemies->enemies.Remove(enemy);
+	UE_LOG(LogTemp, Warning, TEXT("enemies : %d"), spawnedEnemies->actors.Num());
+	spawnedEnemies->actors.Remove(enemy);
 }
 
 void AEnemySpawner::EnemySpawnRelative(const FVector relativeLocation)
@@ -76,12 +48,12 @@ void AEnemySpawner::EnemySpawn(const FVector location)
 	FScriptDelegate enemyDieHandler;
 	enemyDieHandler.BindUFunction(this, "OnEnemyDie");
 	enemy->AddObserver(enemyDieHandler);
-	spawnedEnemies->enemies.Add(enemy);
+	spawnedEnemies->actors.Add(enemy);
 }
 
 int32 AEnemySpawner::GetSpawnedEnemyCount() const
 {
-	return spawnedEnemies->enemies.Num();
+	return spawnedEnemies->actors.Num();
 }
 
 void AEnemySpawner::OnBeginSpawn_Implementation()
@@ -91,6 +63,6 @@ void AEnemySpawner::OnBeginSpawn_Implementation()
 
 void AEnemySpawner::TakeOverEnemies(TArray<ABaseEnemy*> enemies)
 {
-	spawnedEnemies->enemies.Append(enemies);
+	spawnedEnemies->actors.Append(enemies);
 }
 

@@ -5,25 +5,7 @@
 #include "SpawnableInterface.generated.h"
 
 
-// 敵の生成が終了したことを通知する
-DECLARE_DYNAMIC_DELEGATE(FFinishSpawnDelegate);
 
-// 引数構造体
-USTRUCT(BlueprintType)
-struct FFinishSpawn
-{
-	GENERATED_BODY()
-
-public:
-	// 省略したいデリゲート
-	UPROPERTY(BlueprintReadWrite)
-		FFinishSpawnDelegate finishSpawnDelegate;
-
-	FFinishSpawn()
-		: finishSpawnDelegate()
-	{
-	}
-};
 
 UINTERFACE(Blueprintable)
 class USpawnableInterface : public UInterface
@@ -39,5 +21,5 @@ public:
 
 	// スポーン
 	UFUNCTION(BlueprintImplementableEvent)
-		void BeginSpawn(FFinishSpawn spawner, class UEnemyContainer* spawnEnemies);
+		void BeginSpawn();
 };

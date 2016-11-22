@@ -29,8 +29,5 @@ void AActionPhaseController::Tick( float DeltaTime )
 
 void AActionPhaseController::Finish_Implementation()
 {
-	for (auto enemy : spawnedEnemies->enemies)
-	{
-		enemy->RemoveObserver(this);
-	}
+
 }
