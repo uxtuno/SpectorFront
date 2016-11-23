@@ -14,6 +14,6 @@ class SPECTERFRONT_API UObjectCreator : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "Utility", meta = (DeterminesOutputType = "type"))
-		static UObject* NewObject(TSubclassOf<UObject> type);
+	UFUNCTION(BlueprintPure, meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject", DisplayName = "Create Object From Blueprint", CompactNodeTitle = "Create", Keywords = "new create blueprint", DeterminesOutputType = "type"), Category = Game)
+		static UObject* CreateObject(UObject* WorldContextObject, TSubclassOf<UObject> type);
 };

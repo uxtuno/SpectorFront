@@ -1,10 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpecterFront.h"
+#include "Engine.h"
 #include "ObjectCreator.h"
 
 
-UObject* UObjectCreator::NewObject(TSubclassOf<UObject> type)
+UObject* UObjectCreator::CreateObject(UObject* WorldContextObject, TSubclassOf<UObject> type)
 {
-	return ::NewObject<UObject>(type->GetClass());
+	UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject);
+	auto a = type->GetOwnerClass();
+	return NewObject<UObject>(WorldContextObject, type);
 }

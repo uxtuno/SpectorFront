@@ -4,6 +4,11 @@
 #include "ActorContainer.h"
 
 
+UActorContainer::UActorContainer()
+{
+
+}
+
 int32 UActorContainer::GetLength() const
 {
 	return actors.Num();

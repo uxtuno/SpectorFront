@@ -16,6 +16,9 @@ class SPECTERFRONT_API UActorContainer : public UObject
 	GENERATED_BODY()
 
 public:
+
+	UActorContainer();
+
 	UPROPERTY(BlueprintReadWrite)
 		TArray<AActor*> actors;
 
