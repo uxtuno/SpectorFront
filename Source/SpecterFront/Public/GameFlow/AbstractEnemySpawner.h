@@ -42,7 +42,7 @@ public:
 		void TriggerSpawn(AAbstractEnemySpawner* parent, FFinishSpawn callback, UActorContainer* allEnemies);
 
 	// 生成した敵の数を取得
-	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
+	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "EnemySpawner")
 		int32 GetSpawnedEnemyCount() const;
 
 protected:

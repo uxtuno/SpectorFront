@@ -36,7 +36,4 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
 		void EnemySpawn(const FVector location);
 
-	// 管理中の敵の数
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "EnemySpawn")
-		int32 GetSpawnedEnemyCount() const;
 };

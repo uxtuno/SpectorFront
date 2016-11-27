@@ -8,6 +8,5 @@
 UObject* UObjectCreator::CreateObject(UObject* WorldContextObject, TSubclassOf<UObject> type)
 {
 	UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject);
-	auto a = type->GetOwnerClass();
 	return NewObject<UObject>(WorldContextObject, type);
 }

@@ -41,9 +41,3 @@ void AEnemySpawner::EnemySpawn(const FVector location)
 	ienemy->Execute_AddObserver(enemy, this);
 	NotifiAddEnemy();
 }
-
-int32 AEnemySpawner::GetSpawnedEnemyCount() const
-{
-	return spawnedEnemies.Num();
-}
-
