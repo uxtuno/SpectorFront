@@ -9,59 +9,9 @@
 #include "EnemySpawnController.h"
 
 
-// 生成
-// owner : 生成元
-void AEnemySpawner::BeginSpawn_Implementation(FFinishSpawn callback, UEnemyContainer* spawnedEnemies)
-{
-	// スポーン実行中
-	if (isSpawing)
-		return;
-
-	finishSpawnHandler = callback.finishSpawnDelegate;
-
-	if (spawnedEnemies != nullptr)
-	{
-		this->spawnedEnemies = spawnedEnemies;
-	}
-
-	isSpawing = true;
-	OnBeginSpawn();
-}
-
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-
-	spawnedEnemies = NewObject<UEnemyContainer>();
-}
-
-void AEnemySpawner::FinishSpawn()
-{
-	//// 全ての敵の通知先から自身を削除
-	//for (auto enemy : spawnedEnemies->enemies)
-	//{
-	//	if (enemy == nullptr)
-	//		continue;
-
-	//	enemy->RemoveObserver(this);
-	//}
-
-	finishSpawnHandler.ExecuteIfBound();
-
-	OnFinishSpawn();
-
-	isSpawing = false;
-}
-
-void AEnemySpawner::OnFinishSpawn_Implementation()
-{
-
-}
-
-void AEnemySpawner::OnEnemyDie_Implementation(ABaseEnemy* enemy)
-{
-	UE_LOG(LogTemp, Warning, TEXT("enemies : %d"), spawnedEnemies->enemies.Num());
-	spawnedEnemies->enemies.Remove(enemy);
 }
 
 void AEnemySpawner::EnemySpawnRelative(const FVector relativeLocation)
@@ -78,33 +28,16 @@ void AEnemySpawner::EnemySpawn(const FVector location)
 
 	FActorSpawnParameters p;
 	p.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	ABaseEnemy* enemy = Cast<ABaseEnemy>(GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p));
+	auto enemy = GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p);
+	auto ienemy = Cast<IEnemyInterface>(enemy);
 
 	if (enemy == nullptr)
 	{
 		return;
 	}
 
-	enemy->SpawnDefaultController();
+	Cast<APawn>(enemy)->SpawnDefaultController();
 
-	FScriptDelegate enemyDieHandler;
-	enemyDieHandler.BindUFunction(this, "OnEnemyDie");
-	enemy->AddObserver(enemyDieHandler);
-	spawnedEnemies->enemies.Add(enemy);
+	ienemy->Execute_AddObserver(enemy, this);
+	NotifiAddEnemy();
 }
-
-int32 AEnemySpawner::GetSpawnedEnemyCount() const
-{
-	return spawnedEnemies->enemies.Num();
-}
-
-void AEnemySpawner::OnBeginSpawn_Implementation()
-{
-	EnemySpawnRelative(FVector(0.0f, 0.0f, 0.0f));
-}
-
-void AEnemySpawner::TakeOverEnemies(TArray<ABaseEnemy*> enemies)
-{
-	spawnedEnemies->enemies.Append(enemies);
-}
-
