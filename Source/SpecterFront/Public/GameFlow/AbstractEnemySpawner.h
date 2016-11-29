@@ -55,11 +55,11 @@ protected:
 		void Finish();
 
 	// スポーン開始時に呼ばれる
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+	UFUNCTION(BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		void BeginSpawn();
 
 	// スポーン終了時に呼ばれる
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+	UFUNCTION(BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		void FinishSpawn();
 
 	// 敵の追加を子から親へ通知
