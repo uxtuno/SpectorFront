@@ -14,11 +14,17 @@ UObject* UMyBlueprintFunctionLibrary::CreateObject(UObject* WorldContextObject, 
 UObject* UMyBlueprintFunctionLibrary::FindUniqueActorOfClass(UObject* WorldContextObject, TSubclassOf<AActor> type)
 {
 	UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject);
-	TActorIterator<AActor> ait(World, type);
-	if (!ait || ait.GetProgressNumerator() != 1)
+	
+	TArray<AActor*> actors;
+	for (TActorIterator<AActor> ait(World, type); ait; ++ait)
 	{
-		return nullptr;
+		actors.Add((*ait));
 	}
 
-	return *ait;
+	if (actors.Num() == 1)
+	{
+		return actors[0];
+	}
+	
+	return nullptr;
 }
