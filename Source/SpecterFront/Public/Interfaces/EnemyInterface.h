@@ -17,6 +17,17 @@ class IEnemyInterface
 	GENERATED_IINTERFACE_BODY()
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-		void Enemy();
+		void MoveTo();
 
+	// oŒ»‚ÉŒÄ‚Ô
+	UFUNCTION(BlueprintImplementableEvent)
+		void Appearance();
+
+	// €–S‚É’Ê’m‚·‚éæ‚ğ“o˜^
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
+		void AddObserver(UObject* observer);
+
+	// ’Ê’mæ‚ğíœ
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
+		void RemoveObserver(UObject* observer);
 };
