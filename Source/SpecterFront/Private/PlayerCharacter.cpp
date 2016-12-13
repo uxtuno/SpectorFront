@@ -149,6 +149,7 @@ void APlayerCharacter::OnFire()
 			if (hit.Actor != this)
 			{
 				auto component = Cast<UPrimitiveComponent>(hit.Actor->GetComponentByClass(UPrimitiveComponent::StaticClass()));
+				
 
 				if (component != nullptr && component->IsSimulatingPhysics())
 				{
@@ -169,8 +170,8 @@ void APlayerCharacter::OnFire()
 					FDamageEvent DamageEvent(ValidDamageTypeClass);
 
 					Cast<ABaseEnemy, AActor>(hit.Actor)->OnDamage(power, GetController(), this);
-					if (hit.Component->IsSimulatingPhysics())
-						hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
+					//if (hit.Component->IsSimulatingPhysics())
+					//	hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
 				}
 			}
 		}
