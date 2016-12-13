@@ -50,9 +50,13 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
 		void OnEnemyDie(TScriptInterface<IEnemyInterface>& enemy);
 
-	// スポーン終了を宣言し、再びスポーン開始を可能とする
+	// Spawnerの制御を終了
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
 		void Finish();
+
+	// スポーン終了を宣言
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
+		void EndSpawn();
 
 	// スポーン開始時に呼ばれる
 	UFUNCTION(BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
@@ -60,7 +64,7 @@ protected:
 
 	// スポーン終了時に呼ばれる
 	UFUNCTION(BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
-		void FinishSpawn();
+		void OnEndSpawn();
 
 	// 敵の追加を子から親へ通知
 	void NotifiAddEnemy();
@@ -88,6 +92,10 @@ private:
 	// スポーン中、このフラグがtrueの間は、TriggerSpawnを呼ばれてもスポーンが行われない
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		bool isSpawning;
+
+	// 生成中、このフラグがtrueの間は、生成中の敵をすべて倒されても終了しない
+	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		bool isGenerating;
 
 	// スポーン終了を通知する
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
