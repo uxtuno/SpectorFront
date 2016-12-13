@@ -39,6 +39,17 @@ int32 AAbstractEnemySpawner::GetSpawnedEnemyCount() const
 	return managedEnemyCount;
 }
 
+void AAbstractEnemySpawner::EndSpawn()
+{
+	if (!isSpawning)
+	{
+		return;
+	}
+
+	// BPに対して終了通知
+	OnEndSpawn();
+}
+
 void AAbstractEnemySpawner::Finish()
 {
 	if (!isSpawning)
@@ -48,7 +59,7 @@ void AAbstractEnemySpawner::Finish()
 
 	isSpawning = false;
 
-	// 終了通知
+	// 親に対して終了通知
 	finishSpawnHandler.finishSpawnDelegate.ExecuteIfBound();
 }
 
