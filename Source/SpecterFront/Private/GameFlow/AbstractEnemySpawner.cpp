@@ -8,6 +8,7 @@
 AAbstractEnemySpawner::AAbstractEnemySpawner()
 	: allEnemies(nullptr)
 	, isSpawning(false)
+	, isGenerating(false)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -30,6 +31,7 @@ void AAbstractEnemySpawner::TriggerSpawn_Implementation(AAbstractEnemySpawner* p
 	this->parent = parent;
 	finishSpawnHandler = callback;
 	isSpawning = true;
+	isGenerating = true;
 
 	BeginSpawn();
 }
@@ -45,6 +47,8 @@ void AAbstractEnemySpawner::EndSpawn()
 	{
 		return;
 	}
+
+	isGenerating = false;
 
 	// BPに対して終了通知
 	OnEndSpawn();
@@ -65,10 +69,10 @@ void AAbstractEnemySpawner::Finish()
 
 void AAbstractEnemySpawner::NotifiAddEnemy()
 {
+	++managedEnemyCount;
+
 	if (parent == nullptr)
 		return;
-
-	++managedEnemyCount;
 
 	// 子から親へ順次呼び出していく
 	parent->NotifiAddEnemy();
@@ -76,10 +80,10 @@ void AAbstractEnemySpawner::NotifiAddEnemy()
 
 void AAbstractEnemySpawner::NotifiRemoveEnemy()
 {
+	--managedEnemyCount;
+
 	if (parent == nullptr)
 		return;
-
-	--managedEnemyCount;
 
 	// 子から親へ順次呼び出していく
 	parent->NotifiRemoveEnemy();
