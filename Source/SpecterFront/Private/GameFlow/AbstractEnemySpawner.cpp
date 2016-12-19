@@ -33,6 +33,7 @@ void AAbstractEnemySpawner::TriggerSpawn_Implementation(AAbstractEnemySpawner* p
 	isSpawning = true;
 	isGenerating = true;
 
+	Initialize();
 	BeginSpawn();
 }
 
