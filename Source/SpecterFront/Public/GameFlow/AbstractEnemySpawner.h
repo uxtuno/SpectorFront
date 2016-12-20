@@ -58,6 +58,10 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
 		void EndSpawn();
 
+	// 初期化を行う
+	UFUNCTION(BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		void Initialize();
+
 	// スポーン開始時に呼ばれる
 	UFUNCTION(BlueprintImplementableEvent, Category = "EnemySpawner", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		void BeginSpawn();

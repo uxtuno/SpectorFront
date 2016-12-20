@@ -36,6 +36,8 @@ void AEnemySpawner::EnemySpawn(const FVector location)
 		return;
 	}
 
+	allEnemies->AddActor(enemy);
+
 	Cast<APawn>(enemy)->SpawnDefaultController();
 
 	ienemy->Execute_AddObserver(enemy, this);
