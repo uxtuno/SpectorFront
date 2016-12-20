@@ -58,11 +58,12 @@ public: // UFUNCTION
 		void Kill(AController * instigatedBy, AActor * damageCauser);
 
 private: // UPROPERTY
-
 	// HP
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Status", meta = (BlueprintProtected))
 		float hp;
-
+	// Score
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Status", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
+		int32 score;
 	// çUåÇóÕ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		float power;

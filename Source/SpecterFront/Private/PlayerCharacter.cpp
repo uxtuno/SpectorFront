@@ -366,3 +366,8 @@ void APlayerCharacter::SetReticleLocation(FVector2D location)
 		reticleLocation.Y = aimingAreaMargin;
 	}
 }
+
+void APlayerCharacter::OnDamage_Implementation(float damage, AController* instigatedBy, AActor* damageCauser)
+{
+
+}

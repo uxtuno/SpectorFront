@@ -3,11 +3,12 @@
 #pragma once
 
 #include "MyCharacter.h"
+#include "DamageListenerInterface.h"
 #include "PlayerCharacter.generated.h"
 
 
 UCLASS()
-class SPECTERFRONT_API APlayerCharacter : public AMyCharacter
+class SPECTERFRONT_API APlayerCharacter : public AMyCharacter,public IDamageListenerInterface
 {
 	GENERATED_BODY()
 
@@ -66,6 +67,10 @@ public:
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		class UAnimMontage* FireAnimation;
+
+	// IDamageListenerInterface‚ÌŽÀ‘•
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void OnDamage(float damage, AController* instigatedBy, AActor* damageCauser);
 
 protected:
 
