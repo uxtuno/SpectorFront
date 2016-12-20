@@ -10,12 +10,14 @@ void ABaseEnemy::Wait(float tick)
 {
 }
 
-void ABaseEnemy::AddObserver(const FScriptDelegate& observer)
+void ABaseEnemy::AddObserver_Implementation(UObject* observer)
 {
-	notifiEnemyDieEventDispather.AddUnique(observer);
+	FScriptDelegate enemyDieHandler;
+	enemyDieHandler.BindUFunction(observer, "OnEnemyDie");
+	notifiEnemyDieEventDispather.Add(enemyDieHandler);
 }
 
-void ABaseEnemy::RemoveObserver(UObject* const observer)
+void ABaseEnemy::RemoveObserver_Implementation(UObject* observer)
 {
 	notifiEnemyDieEventDispather.RemoveAll(observer);
 }
@@ -33,6 +35,14 @@ void ABaseEnemy::OnDamage_Implementation(float damage, AController* instigatedBy
 void ABaseEnemy::OnDeath_Implementation(AController * instigatedBy, AActor * damageCauser)
 {
 	notifiEnemyDieEventDispather.Broadcast(this);
+}
+
+void ABaseEnemy::MoveTo_Implementation()
+{
+}
+
+void ABaseEnemy::Appearance_Implementation()
+{
 }
 
 void ABaseEnemy::Kill(AController * instigatedBy, AActor * damageCauser)

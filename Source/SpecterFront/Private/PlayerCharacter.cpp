@@ -25,10 +25,10 @@ APlayerCharacter::APlayerCharacter()
 	BaseLookUpRate = 45.f;
 
 	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->RelativeLocation = FVector(-39.56f, 1.75f, 64.f); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+	//FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	//FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+	//FirstPersonCameraComponent->RelativeLocation = FVector(-39.56f, 1.75f, 64.f); // Position the camera
+	//FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 30.0f, 10.0f);
@@ -149,6 +149,7 @@ void APlayerCharacter::OnFire()
 			if (hit.Actor != this)
 			{
 				auto component = Cast<UPrimitiveComponent>(hit.Actor->GetComponentByClass(UPrimitiveComponent::StaticClass()));
+				
 
 				if (component != nullptr && component->IsSimulatingPhysics())
 				{
@@ -169,8 +170,8 @@ void APlayerCharacter::OnFire()
 					FDamageEvent DamageEvent(ValidDamageTypeClass);
 
 					Cast<ABaseEnemy, AActor>(hit.Actor)->OnDamage(power, GetController(), this);
-					if (hit.Component->IsSimulatingPhysics())
-						hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
+					//if (hit.Component->IsSimulatingPhysics())
+					//	hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
 				}
 			}
 		}

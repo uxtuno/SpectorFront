@@ -4,13 +4,14 @@
 
 #include "GameFramework/Character.h"
 #include "DamageListenerInterface.h"
+#include "EnemyInterface.h"
 #include "BaseEnemy.generated.h"
 
 // “G‚ª€–S‚µ‚½‚Æ‚«‚É’Ê’m‚·‚é
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotifiEnemyDieDelegate, class ABaseEnemy*, enemy);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotifiEnemyDieDelegate, class TScriptInterface<IEnemyInterface>, enemy);
 
 UCLASS(abstract, Blueprintable, BlueprintType)
-class SPECTERFRONT_API ABaseEnemy : public APawn, public IDamageListenerInterface
+class SPECTERFRONT_API ABaseEnemy : public APawn, public IDamageListenerInterface, public IEnemyInterface
 {
 	GENERATED_BODY()
 
@@ -18,11 +19,18 @@ public:
 
 	virtual void Wait(float tick);
 
+	//IEnemyInterface‚ÌÀ‘•
 	// €–S‚É’Ê’m‚·‚éæ‚ğ“o˜^
-	void AddObserver(const FScriptDelegate& observer);
+	// €–S‚Éobserver‚ÉŠÜ‚Ü‚ê‚éOnEnemyDie()‚ğŒÄ‚Ño‚·
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
+		void AddObserver(UObject* observer);
+		virtual void AddObserver_Implementation(UObject* observer) override;
 
+	//IEnemyInterface‚ÌÀ‘•
 	// ’Ê’mæ‚ğíœ
-	void RemoveObserver(UObject* const observer);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
+		void RemoveObserver(UObject* observer);
+		virtual void RemoveObserver_Implementation(UObject* observer) override;
 
 public: // UFUNCTION
 
@@ -36,6 +44,14 @@ public: // UFUNCTION
 	// IDamageListenerInterface‚ÌÀ‘•
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 		void OnDamage(float damage, AController* instigatedBy, AActor* damageCauser);
+
+	//IEnemyInterface‚ÌÀ‘•
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void MoveTo();
+
+	//IEnemyInterface‚ÌÀ‘•
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void Appearance();
 
 	// E‚·
 	UFUNCTION(BlueprintCallable, Category = "Character")

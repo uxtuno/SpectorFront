@@ -4,6 +4,9 @@
 
 #include "SpawnableInterface.generated.h"
 
+
+
+
 UINTERFACE(Blueprintable)
 class USpawnableInterface : public UInterface
 {
@@ -18,5 +21,5 @@ public:
 
 	// ÉXÉ|Å[Éì
 	UFUNCTION(BlueprintImplementableEvent)
-		void BeginSpawn(class AEnemySpawner* spawner);
+		void BeginSpawn();
 };
