@@ -7,6 +7,8 @@
 
 void AMyPlayerController::BeginPlay()
 {
+	Super::BeginPlay();
+
 	const ULocalPlayer* LocalPlayer = GetLocalPlayer();
 	if (LocalPlayer && LocalPlayer->ViewportClient)
 	{
@@ -25,6 +27,8 @@ void AMyPlayerController::BeginPlay()
 
 void AMyPlayerController::Tick(float deltaTime)
 {
+	Super::Tick(deltaTime);
+
 	float x;
 	float y;
 	this->GetMousePosition(x, y);
@@ -32,8 +36,6 @@ void AMyPlayerController::Tick(float deltaTime)
 	auto player = Cast<APlayerCharacter>(this->GetPawn());
 
 	player->SetReticleLocation(FVector2D(x, y));
-
-
 }
 
 

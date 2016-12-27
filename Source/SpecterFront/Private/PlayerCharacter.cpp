@@ -136,7 +136,7 @@ void APlayerCharacter::OnFire()
 		FHitResult hit;
 		FVector start = FVector(worldLocation);
 		FVector end = start + worldDirection * 3000.0f;
-		ECollisionChannel c = ECollisionChannel::ECC_WorldStatic;
+		ECollisionChannel c = ECollisionChannel::ECC_WorldDynamic;
 		FCollisionQueryParams p;
 		FCollisionResponseParams rp;
 		p.AddIgnoredActor(this);
@@ -283,6 +283,10 @@ void APlayerCharacter::TurnAtRate(float Rate)
 
 void APlayerCharacter::MouseVertical(float rate)
 {
+	if (GEngine != nullptr && GEngine->GameViewport != nullptr) {
+		return;
+	}
+
 	// ビューポートのサイズを格納
 	GEngine->GameViewport->GetViewportSize(viewPortSize);
 
@@ -302,6 +306,9 @@ void APlayerCharacter::MouseVertical(float rate)
 
 void APlayerCharacter::MouseHorizontal(float rate)
 {
+	if (GEngine != nullptr && GEngine->GameViewport != nullptr) {
+		return;
+	}
 	// ビューポートのサイズを格納
 	GEngine->GameViewport->GetViewportSize(viewPortSize);
 
@@ -340,7 +347,13 @@ bool APlayerCharacter::EnableTouchscreenMovement(class UInputComponent* InputCom
 
 void APlayerCharacter::SetReticleLocation(FVector2D location)
 {
-	GEngine->GameViewport->GetViewportSize(viewPortSize);
+	if (GEngine->IsValidLowLevel()) {
+		if (GEngine->GameViewport == nullptr) {
+			return;
+		}
+
+		GEngine->GameViewport->GetViewportSize(viewPortSize);
+	}
 
 	reticleLocation.X = location.X;
 	reticleLocation.Y = location.Y;
