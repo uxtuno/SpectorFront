@@ -7,6 +7,18 @@
 #include "AbstractEnemySpawner.h"
 #include "SpawnDirector.generated.h"
 
+USTRUCT(Blueprintable)
+struct FSpawninfomation
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+		class AAbstractEnemySpawner* spawner;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UBaseCameraController> cameraController;
+};
+
 UCLASS()
 class SPECTERFRONT_API ASpawnDirector : public AAbstractEnemySpawner
 {
@@ -19,3 +31,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EnemySpawner")
 		TArray<AAbstractEnemySpawner*> spawners;
 };
+
+
+
