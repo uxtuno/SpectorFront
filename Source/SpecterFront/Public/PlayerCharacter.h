@@ -8,7 +8,7 @@
 
 
 UCLASS()
-class SPECTERFRONT_API APlayerCharacter : public AMyCharacter,public IDamageListenerInterface
+class SPECTERFRONT_API APlayerCharacter : public AMyCharacter, public IDamageListenerInterface
 {
 	GENERATED_BODY()
 
@@ -72,6 +72,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 		void OnDamage(float damage, AController* instigatedBy, AActor* damageCauser);
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GameFlow")
+		void OnBeginActionPhase(class UBaseCameraController* cameraController);
+
 protected:
 
 	/** Fires a projectile. */
@@ -105,7 +108,7 @@ protected:
 
 	struct TouchData
 	{
-		TouchData() { bIsPressed = false;Location = FVector::ZeroVector; }
+		TouchData() { bIsPressed = false; Location = FVector::ZeroVector; }
 		bool bIsPressed;
 		ETouchIndex::Type FingerIndex;
 		FVector Location;

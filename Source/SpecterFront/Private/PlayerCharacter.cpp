@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpecterFront.h"
+#include "BaseCameraController.h"
 #include "PlayerCharacter.h"
 #include "MyPlayerController.h"
 #include "BaseEnemy.h"
@@ -117,6 +118,10 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 	//InputComponent->BindAxis("TurnRate", this, &APlayerCharacter::TurnAtRate);
 	InputComponent->BindAxis("LookUp", this, &APlayerCharacter::MouseVertical);
 	//InputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
+}
+
+void APlayerCharacter::OnBeginActionPhase_Implementation(UBaseCameraController* cameraController)
+{
 }
 
 void APlayerCharacter::OnFire()
