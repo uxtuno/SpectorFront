@@ -5,6 +5,7 @@
 #include "PlayerCharacter.h"
 #include "MyPlayerController.h"
 #include "BaseEnemy.h"
+#include "AbstractEnemySpawner.h"
 
 #include "SpecterFrontProjectile.h"
 #include "TestMove_PingPong.h"
@@ -120,8 +121,38 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 	//InputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
 }
 
-void APlayerCharacter::OnBeginActionPhase_Implementation(UBaseCameraController* cameraController)
+void APlayerCharacter::BeginActionPhase(AAbstractEnemySpawner* currentSpawner)
 {
+	auto cameraControllClass = currentSpawner->GetCameraControllClass();
+
+	if (*cameraControllClass != nullptr)
+	{
+		currentCameraController = NewObject<UBaseCameraController>(this, *cameraControllClass);
+	}
+
+	if (currentCameraController != nullptr)
+	{
+		currentCameraController->BeginCameraControll(cameraComponent, currentSpawner);
+	}
+	OnBeginActionPhase(currentSpawner);
+}
+
+void APlayerCharacter::TickActionPhase()
+{
+	if (currentCameraController != nullptr)
+	{
+		currentCameraController->TickCameraControll(GetWorld()->GetDeltaSeconds());
+	}
+	OnTickActionPhase();
+}
+
+void APlayerCharacter::EndActionPhase()
+{
+	if (currentCameraController != nullptr)
+	{
+		currentCameraController->EndCameraControll();
+	}
+	OnEndActionPhase();
 }
 
 void APlayerCharacter::OnFire()

@@ -7,6 +7,11 @@
 
 UObject* UMyBlueprintFunctionLibrary::CreateObject(UObject* WorldContextObject, TSubclassOf<UObject> type)
 {
+	if (*type == nullptr) 
+	{
+		return nullptr;
+	}
+
 	UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject);
 	return NewObject<UObject>(WorldContextObject, type);
 }

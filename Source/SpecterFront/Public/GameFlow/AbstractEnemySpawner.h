@@ -45,6 +45,14 @@ public:
 	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "EnemySpawner")
 		int32 GetSpawnedEnemyCount() const;
 
+	// 現在出現中の敵
+	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "EnemySpawner")
+		class UActorContainer* GetAllEnemies() const { return allEnemies; }
+
+	// カメラコントロールクラスを返す
+	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
+		TSubclassOf<class UBaseCameraController> GetCameraControllClass() const { return cameraControllClass; }
+
 protected:
 	// 生成した敵が死亡したときに呼び出される
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EnemySpawn", meta = (BlueprintProtected))
@@ -104,6 +112,9 @@ private:
 	// スポーン終了を通知する
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		FFinishSpawn finishSpawnHandler;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UBaseCameraController> cameraControllClass;
 
 	// 管理中の敵の数
 	int32 managedEnemyCount;

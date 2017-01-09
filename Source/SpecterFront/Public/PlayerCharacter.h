@@ -72,8 +72,33 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 		void OnDamage(float damage, AController* instigatedBy, AActor* damageCauser);
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GameFlow")
-		void OnBeginActionPhase(class UBaseCameraController* cameraController);
+	// アクションフェーズ開始時に呼び出す
+	UFUNCTION(BlueprintCallable, Category = "GameFlow")
+		void BeginActionPhase(class AAbstractEnemySpawner* currentSpawner);
+
+	// アクションフェーズ開始時に呼び出される
+	UFUNCTION(BlueprintImplementableEvent, Category = "GameFlow")
+		void OnBeginActionPhase(class AAbstractEnemySpawner* currentSpawner);
+
+	// アクションフェーズ中、マイフレーム呼び出す
+	UFUNCTION(BlueprintCallable, Category = "GameFlow")
+		void TickActionPhase();
+
+	// アクションフェーズ中、マイフレーム呼び出される
+	UFUNCTION(BlueprintImplementableEvent, Category = "GameFlow")
+		void OnTickActionPhase();
+
+	// アクションフェーズ終了時に呼び出す
+	UFUNCTION(BlueprintCallable, Category = "GameFlow")
+		void EndActionPhase();
+
+	// アクションフェーズ終了時に呼び出される
+	UFUNCTION(BlueprintImplementableEvent, Category = "GameFlow")
+		void OnEndActionPhase();
+
+	// 現在のカメラコントローラを取得
+	UFUNCTION(BlueprintCallable, Category = "Player")
+		UBaseCameraController* GetCurrentCameraController() { return currentCameraController; }
 
 protected:
 
@@ -152,6 +177,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player")
 		float aimingSpeed;
 
+protected:
+	UPROPERTY(BlueprintReadWrite, Category = Camera, meta = (BlueprintProtected))
+		class UCameraComponent* cameraComponent;
+
 private:
 	// 発射可能時間までをカウントダウンする(0.0f以下なら発射可能)
 	float shootIntervalCount;
@@ -166,6 +195,13 @@ private:
 	const float aimingAreaMargin = 20.0f;
 
 	FVector2D viewPortSize;
+
+	// 現在のカメラコントローラ
+	UPROPERTY()
+		UBaseCameraController* currentCameraController;
+
+	UPROPERTY()
+		class AAbstractEnemySpawner* currentEnemySpawner;
 
 	void SetReticleLocation(FVector2D location);
 };
