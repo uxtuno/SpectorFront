@@ -15,4 +15,3 @@ ASpawnDirector::ASpawnDirector()
 	//GetSpriteComponent()->DestroyComponent();
 	//GetArrowComponent()->DestroyComponent();
 }
-
