@@ -205,7 +205,9 @@ void APlayerCharacter::OnFire()
 					TSubclassOf<UDamageType> const ValidDamageTypeClass = TSubclassOf<UDamageType>(UDamageType::StaticClass());
 					FDamageEvent DamageEvent(ValidDamageTypeClass);
 
-					Cast<ABaseEnemy, AActor>(hit.Actor)->OnDamage(power, GetController(), this);
+					auto enemy = Cast<ABaseEnemy, AActor>(hit.Actor);
+					enemy->OnDamage(power, GetController(), this);
+					onHitDelegate.Broadcast(TScriptInterface<IEnemyInterface>(enemy));
 					//if (hit.Component->IsSimulatingPhysics())
 					//	hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
 				}

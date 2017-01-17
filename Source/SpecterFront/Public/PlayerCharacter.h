@@ -6,6 +6,9 @@
 #include "DamageListenerInterface.h"
 #include "PlayerCharacter.generated.h"
 
+// 攻撃ヒット時のデリゲート
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHitDelegate, class TScriptInterface<IEnemyInterface>, enemy);
+
 
 UCLASS()
 class SPECTERFRONT_API APlayerCharacter : public AMyCharacter, public IDamageListenerInterface
@@ -202,6 +205,9 @@ private:
 
 	UPROPERTY()
 		class AAbstractEnemySpawner* currentEnemySpawner;
+
+	UPROPERTY(BlueprintAssignable, meta = (AllowPrivateAccess = "true"))
+		FOnHitDelegate onHitDelegate;
 
 	void SetReticleLocation(FVector2D location);
 };
