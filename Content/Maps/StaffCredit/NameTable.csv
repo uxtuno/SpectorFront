@@ -1,4 +1,4 @@
-,NameType,NameString,NextInterval
+﻿,NameType,NameString,NextInterval
 0,0,STAFF,2
 1,1,Chief Designer,1
 2,2,Aoki,3
@@ -11,3 +11,6 @@
 9,2,<>Sakai<>Kikutani,3
 10,1,Planner,1
 11,2,<>Kawamoto<>Nakaoka,3
+12,3,0,4
+13,3,1,4
+14,3,2,0
