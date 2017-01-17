@@ -59,7 +59,7 @@ public: // UFUNCTION
 
 private: // UPROPERTY
 	// HP
-	UPROPERTY(EditAnywhere, Category = "Status", meta = (BlueprintProtected))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Status", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		float hp;
 	// Score
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Status", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
