@@ -1,8 +1,8 @@
 {
 	"Changelist" : 3039270,
-	"BuildId" : "24c27cd6-450b-4927-a6e7-7d78a14c5124",
+	"BuildId" : "c304d36c-381e-4ab5-bb6c-7e5610f899d6",
 	"Modules" : 
 	{
-		"SpecterFront" : "UE4Editor-SpecterFront.dll"
+		"SpecterFront" : "UE4Editor-SpecterFront-1147.dll"
 	}
 }

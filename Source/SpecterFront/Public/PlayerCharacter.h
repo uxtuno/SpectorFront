@@ -7,7 +7,7 @@
 #include "PlayerCharacter.generated.h"
 
 // 攻撃ヒット時のデリゲート
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHitDelegate, class TScriptInterface<IEnemyInterface>, enemy);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHitDelegate, AActor*, hitActor, float, damage);
 
 
 UCLASS()
