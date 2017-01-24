@@ -7,13 +7,17 @@
 
 
 USTRUCT()
-struct FSceneName
+struct FSceneData
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString name;
+
+	// ステージかどうか
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isStage;
 };
 
 
@@ -27,5 +31,8 @@ class SPECTERFRONT_API USceneTransitionData : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		TArray<FSceneName> Scenes;
+		TArray<FSceneData> Scenes;
+
+	UFUNCTION(BlueprintCallable, Category = "Scene")
+		int32 FindScene(FString sceneName) const;
 };
