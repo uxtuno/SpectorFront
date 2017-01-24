@@ -207,7 +207,20 @@ void APlayerCharacter::OnFire()
 
 					auto enemy = Cast<ABaseEnemy, AActor>(hit.Actor);
 					enemy->OnDamage(power, GetController(), this);
-					onHitDelegate.Broadcast(TScriptInterface<IEnemyInterface>(enemy));
+					onHitDelegate.Broadcast(enemy, power);
+					//if (hit.Component->IsSimulatingPhysics())
+					//	hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
+				}
+				else if (hit.Actor->ActorHasTag("EnemyWeapon"))
+				{
+					FVector to = hit.ImpactPoint;
+					FVector from = worldLocation;
+					FVector vec = (to - from).GetSafeNormal();
+					TSubclassOf<UDamageType> const ValidDamageTypeClass = TSubclassOf<UDamageType>(UDamageType::StaticClass());
+					FDamageEvent DamageEvent(ValidDamageTypeClass);
+
+					hit.Actor->TakeDamage(power, DamageEvent, GetController(), this);
+					onHitDelegate.Broadcast(&(*hit.Actor), power);
 					//if (hit.Component->IsSimulatingPhysics())
 					//	hit.Component->AddImpulseAtLocation(vec * 1000000.0f, to);
 				}

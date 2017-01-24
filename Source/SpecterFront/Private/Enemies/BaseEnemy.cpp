@@ -6,6 +6,13 @@
 #include "BaseEnemy.h"
 #include "Components/SkeletalMeshComponent.h"
 
+void ABaseEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	maxHp = hp;
+}
+
 void ABaseEnemy::Wait(float tick)
 {
 }
@@ -32,7 +39,7 @@ void ABaseEnemy::OnDamage_Implementation(float damage, AController* instigatedBy
 	}
 }
 
-void ABaseEnemy::OnDeath_Implementation(AController * instigatedBy, AActor * damageCauser)
+void ABaseEnemy::OnDeath_Implementation(AController* instigatedBy, AActor* damageCauser)
 {
 	notifiEnemyDieEventDispather.Broadcast(this);
 }
@@ -45,7 +52,7 @@ void ABaseEnemy::Appearance_Implementation()
 {
 }
 
-void ABaseEnemy::Kill(AController * instigatedBy, AActor * damageCauser)
+void ABaseEnemy::Kill(AController* instigatedBy, AActor* damageCauser)
 {
 	hp = 0.0f;
 	OnDeath(instigatedBy, damageCauser);
