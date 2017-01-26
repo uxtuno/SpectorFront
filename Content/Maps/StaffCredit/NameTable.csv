@@ -1,16 +1,17 @@
 ﻿,NameType,NameString,NextInterval
-0,0,STAFF,2
-1,1,Chief Designer,1
-2,2,Aoki,3
-3,1,Designer,1
-4,2,<>Hukumoto<>Uehara,1
-5,2,<>Sakurai<>Sakai,3
-6,1,Main Programmer,1
-7,2,Uno,3
-8,1,Programmer,1
-9,2,<>Sakai<>Kikutani,3
-10,1,Planner,1
-11,2,<>Kawamoto<>Nakaoka,3
-12,3,0,4
+0,3,0,6
+1,0,STAFF,2
+2,1,Chief Designer,1
+3,2,Aoki,3
+4,1,Designer,1
+5,2,<>Hukumoto<>Uehara,1
+6,2,<>Sakurai<>Sakai,3
+7,1,Main Programmer,1
+8,2,Uno,3
+9,1,Programmer,1
+10,2,<>Sakai<>Kikutani,3
+11,1,Planner,1
+12,2,<>Kawamoto<>Nakaoka,3
 13,3,1,4
-14,3,2,0
+14,3,2,4
+15,3,3,0
