@@ -2,7 +2,7 @@
 	"TargetName" : "SpecterFrontEditor",
 	"Platform" : "Win64",
 	"Configuration" : "DebugGame",
-	"BuildId" : "c286f638-1b66-4530-a31b-e9df90bd4cbb",
+	"BuildId" : "36a5233d-be62-4c63-a93e-a948ff6d44db",
 	"Version" : 
 	{
 		"MajorVersion" : 4,
@@ -15,15 +15,15 @@
 	"BuildProducts" :
 	[
 		{
-			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-9725-Win64-DebugGame.dll",
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-Win64-DebugGame.dll",
 			"Type" : "DynamicLibrary"
 		},
 		{
-			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-9725-Win64-DebugGame.pdb",
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-Win64-DebugGame.pdb",
 			"Type" : "SymbolFile"
 		},
 		{
-			"Path" : "$(ProjectDir)/Intermediate/Build/Win64/UE4Editor/DebugGame/UE4Editor-SpecterFront-9725-Win64-DebugGame.lib",
+			"Path" : "$(ProjectDir)/Intermediate/Build/Win64/UE4Editor/DebugGame/UE4Editor-SpecterFront-Win64-DebugGame.lib",
 			"Type" : "ImportLibrary"
 		}
 	],
@@ -46,23 +46,11 @@
 			"Type" : "UFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Plugins/Developer/PerforceSourceControl/PerforceSourceControl.uplugin",
-			"Type" : "UFS"
-		},
-		{
-			"Path" : "$(EngineDir)/Plugins/Developer/SubversionSourceControl/SubversionSourceControl.uplugin",
-			"Type" : "UFS"
-		},
-		{
 			"Path" : "$(EngineDir)/Plugins/Developer/UObjectPlugin/UObjectPlugin.uplugin",
 			"Type" : "UFS"
 		},
 		{
 			"Path" : "$(EngineDir)/Plugins/Developer/VisualStudioSourceCodeAccess/VisualStudioSourceCodeAccess.uplugin",
-			"Type" : "UFS"
-		},
-		{
-			"Path" : "$(EngineDir)/Plugins/Editor/EpicSurvey/EpicSurvey.uplugin",
 			"Type" : "UFS"
 		},
 		{
@@ -86,10 +74,6 @@
 			"Type" : "UFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Plugins/Experimental/HTML5Networking/HTML5Networking.uplugin",
-			"Type" : "UFS"
-		},
-		{
 			"Path" : "$(EngineDir)/Plugins/Media/MediaPlayerEditor/MediaPlayerEditor.uplugin",
 			"Type" : "UFS"
 		},
@@ -98,15 +82,7 @@
 			"Type" : "UFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Plugins/Messaging/UdpMessaging/UdpMessaging.uplugin",
-			"Type" : "UFS"
-		},
-		{
 			"Path" : "$(EngineDir)/Plugins/MovieScene/LevelSequenceEditor/LevelSequenceEditor.uplugin",
-			"Type" : "UFS"
-		},
-		{
-			"Path" : "$(EngineDir)/Plugins/MovieScene/MatineeToLevelSequence/MatineeToLevelSequence.uplugin",
 			"Type" : "UFS"
 		},
 		{
@@ -122,35 +98,11 @@
 			"Type" : "UFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Plugins/Runtime/ExampleDeviceProfileSelector/ExampleDeviceProfileSelector.uplugin",
-			"Type" : "UFS"
-		},
-		{
-			"Path" : "$(EngineDir)/Plugins/Runtime/OculusInput/OculusInput.uplugin",
-			"Type" : "UFS"
-		},
-		{
-			"Path" : "$(EngineDir)/Plugins/Runtime/OculusLibrary/OculusLibrary.uplugin",
-			"Type" : "UFS"
-		},
-		{
-			"Path" : "$(EngineDir)/Plugins/Runtime/OculusRift/OculusRift.uplugin",
-			"Type" : "UFS"
-		},
-		{
 			"Path" : "$(EngineDir)/Plugins/Runtime/ProceduralMeshComponent/ProceduralMeshComponent.uplugin",
 			"Type" : "UFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Plugins/Runtime/Steam/SteamVR/SteamVR.uplugin",
-			"Type" : "UFS"
-		},
-		{
 			"Path" : "$(EngineDir)/Plugins/Runtime/WindowsMoviePlayer/WindowsMoviePlayer.uplugin",
-			"Type" : "UFS"
-		},
-		{
-			"Path" : "$(EngineDir)/Plugins/Slate/SlateRemote/SlateRemote.uplugin",
 			"Type" : "UFS"
 		},
 		{
