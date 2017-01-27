@@ -155,7 +155,7 @@ void APlayerCharacter::EndActionPhase()
 	OnEndActionPhase();
 }
 
-void APlayerCharacter::OnFire()
+void APlayerCharacter::OnFire_Implementation()
 {
 	auto controller = Cast<AMyPlayerController>(GetController());
 	UWorld* const world = GetWorld();
