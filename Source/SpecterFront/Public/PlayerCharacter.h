@@ -106,7 +106,9 @@ public:
 protected:
 
 	/** Fires a projectile. */
-	void OnFire();
+	UFUNCTION(BlueprintNativeEvent, Category = "Player")
+		void OnFire();
+
 	void OnFirePressed();
 	void OnFireReleased();
 
