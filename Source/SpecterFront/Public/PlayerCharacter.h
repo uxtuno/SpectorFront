@@ -186,6 +186,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = Camera, meta = (BlueprintProtected))
 		class UCameraComponent* cameraComponent;
 
+	// 着弾
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player", meta = (BlueprintProtected))
+		void OnLanding(FHitResult hit);
+
 private:
 	// 発射可能時間までをカウントダウンする(0.0f以下なら発射可能)
 	float shootIntervalCount;
