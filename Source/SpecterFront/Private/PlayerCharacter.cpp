@@ -171,7 +171,7 @@ void APlayerCharacter::OnFire_Implementation()
 
 		FHitResult hit;
 		FVector start = FVector(worldLocation);
-		FVector end = start + worldDirection * 3000.0f;
+		FVector end = start + worldDirection * 10000.0f;
 		ECollisionChannel c = static_cast<ECollisionChannel>(ECollisionChannel::ECC_WorldDynamic | ECollisionChannel::ECC_WorldStatic);
 		FCollisionQueryParams p;
 		FCollisionResponseParams rp;
