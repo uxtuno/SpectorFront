@@ -14,6 +14,17 @@ AAbstractEnemySpawner::AAbstractEnemySpawner()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void AAbstractEnemySpawner::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (isAutoTriggerSpawn)
+	{
+		auto container = NewObject<UActorContainer>();
+		TriggerSpawn(nullptr, FFinishSpawn(), container);
+	}
+}
+
 void AAbstractEnemySpawner::OnEnemyDie_Implementation(TScriptInterface<IEnemyInterface>& enemy)
 {
 	allEnemies->actors.Remove(Cast<AActor>(enemy.GetObjectRef()));

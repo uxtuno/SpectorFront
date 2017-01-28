@@ -37,6 +37,8 @@ public:
 	// Sets default values for this actor's properties
 	AAbstractEnemySpawner();
 
+	virtual void BeginPlay() override;
+
 	// スポーンを開始する
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "EnemySpawner")
 		void TriggerSpawn(AAbstractEnemySpawner* parent, FFinishSpawn callback, UActorContainer* allEnemies);
@@ -108,6 +110,10 @@ private:
 	// 生成中、このフラグがtrueの間は、生成中の敵をすべて倒されても終了しない
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		bool isGenerating;
+
+	// 開始時に自動で一度起動する
+	UPROPERTY(EditAnywhere)
+		bool isAutoTriggerSpawn;
 
 	// スポーン終了を通知する
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
