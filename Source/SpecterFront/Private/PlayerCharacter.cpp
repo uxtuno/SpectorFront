@@ -47,6 +47,7 @@ void APlayerCharacter::BeginPlay()
 
 	isShootInput = false;
 	shootIntervalCount = 0.0f;
+	maxHp = hp;
 
 	// ビューポートのサイズを格納
 	GEngine->GameViewport->GetViewportSize(viewPortSize);
@@ -235,6 +236,12 @@ void APlayerCharacter::OnFire_Implementation()
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 
+}
+
+void APlayerCharacter::OnLevelChanged()
+{
+	isShootInput = false;
+	hp = maxHp;
 }
 
 void APlayerCharacter::OnFirePressed()
