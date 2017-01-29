@@ -65,6 +65,9 @@ public: // UFUNCTION
 	UFUNCTION(BlueprintCallable, Category = "Character")
 		void Kill(AController* instigatedBy, AActor* damageCauser);
 
+	// Ž€–SŽž‚É’Ê’m‚·‚é
+	UPROPERTY(BlueprintAssignable)
+		FNotifiEnemyDieDelegate notifiEnemyDieEventDispather;
 private: // UPROPERTY
 	// HP
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Status", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
@@ -79,7 +82,5 @@ private: // UPROPERTY
 	UPROPERTY(BlueprintReadOnly, Category = "Status", meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		float maxHp;
 
-	// Ž€–SŽž‚É’Ê’m‚·‚é
-	UPROPERTY(BlueprintAssignable, meta = (AllowPrivateAccess = "true"))
-		FNotifiEnemyDieDelegate notifiEnemyDieEventDispather;
+	
 };

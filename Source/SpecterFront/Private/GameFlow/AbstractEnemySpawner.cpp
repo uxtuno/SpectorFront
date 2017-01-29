@@ -28,7 +28,7 @@ void AAbstractEnemySpawner::BeginPlay()
 void AAbstractEnemySpawner::OnEnemyDie_Implementation(TScriptInterface<IEnemyInterface>& enemy)
 {
 	allEnemies->actors.Remove(Cast<AActor>(enemy.GetObjectRef()));
-	NotifiRemoveEnemy();
+	NotifiRemoveEnemy(enemy);
 }
 
 void AAbstractEnemySpawner::TriggerSpawn_Implementation(AAbstractEnemySpawner* parent, FFinishSpawn callback, UActorContainer* allEnemies)
@@ -43,6 +43,8 @@ void AAbstractEnemySpawner::TriggerSpawn_Implementation(AAbstractEnemySpawner* p
 	finishSpawnHandler = callback;
 	isSpawning = true;
 	isGenerating = true;
+
+	spawnedEnemies = TArray<TScriptInterface<IEnemyInterface>>();
 
 	Initialize();
 	BeginSpawn();
@@ -73,13 +75,14 @@ void AAbstractEnemySpawner::Finish()
 		return;
 	}
 
+	isGenerating = false;
 	isSpawning = false;
 
 	// 親に対して終了通知
 	finishSpawnHandler.finishSpawnDelegate.ExecuteIfBound();
 }
 
-void AAbstractEnemySpawner::NotifiAddEnemy()
+void AAbstractEnemySpawner::NotifiAddEnemy(TScriptInterface<IEnemyInterface> enemy)
 {
 	++managedEnemyCount;
 
@@ -87,10 +90,11 @@ void AAbstractEnemySpawner::NotifiAddEnemy()
 		return;
 
 	// 子から親へ順次呼び出していく
-	parent->NotifiAddEnemy();
+	spawnedEnemies.AddUnique(enemy);
+	parent->NotifiAddEnemy(enemy);
 }
 
-void AAbstractEnemySpawner::NotifiRemoveEnemy()
+void AAbstractEnemySpawner::NotifiRemoveEnemy(TScriptInterface<IEnemyInterface> enemy)
 {
 	--managedEnemyCount;
 
@@ -98,5 +102,6 @@ void AAbstractEnemySpawner::NotifiRemoveEnemy()
 		return;
 
 	// 子から親へ順次呼び出していく
-	parent->NotifiRemoveEnemy();
+	parent->NotifiRemoveEnemy(enemy);
+	spawnedEnemies.Remove(enemy);
 }
