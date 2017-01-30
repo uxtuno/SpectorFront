@@ -37,6 +37,8 @@ public:
 	// Sets default values for this actor's properties
 	AAbstractEnemySpawner();
 
+	virtual void BeginPlay() override;
+
 	// スポーンを開始する
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "EnemySpawner")
 		void TriggerSpawn(AAbstractEnemySpawner* parent, FFinishSpawn callback, UActorContainer* allEnemies);
@@ -52,6 +54,10 @@ public:
 	// カメラコントロールクラスを返す
 	UFUNCTION(BlueprintCallable, Category = "EnemySpawner")
 		TSubclassOf<class UBaseCameraController> GetCameraControllClass() const { return cameraControllClass; }
+
+	// このターゲットが終了したら自分も終了する
+	UPROPERTY(EditAnywhere , BlueprintReadOnly, Category = "EnemySpawner")
+		AActor* seeTargetFinish;
 
 protected:
 	// 生成した敵が死亡したときに呼び出される
@@ -79,10 +85,10 @@ protected:
 		void OnEndSpawn();
 
 	// 敵の追加を子から親へ通知
-	void NotifiAddEnemy();
+	void NotifiAddEnemy(TScriptInterface<IEnemyInterface> enemy);
 
 	// 敵の消滅を子から親へ通知
-	void NotifiRemoveEnemy();
+	void NotifiRemoveEnemy(TScriptInterface<IEnemyInterface> enemy);
 
 	// シーン上に存在するすべての敵
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
@@ -108,6 +114,10 @@ private:
 	// 生成中、このフラグがtrueの間は、生成中の敵をすべて倒されても終了しない
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))
 		bool isGenerating;
+
+	// 開始時に自動で一度起動する
+	UPROPERTY(EditAnywhere)
+		bool isAutoTriggerSpawn;
 
 	// スポーン終了を通知する
 	UPROPERTY(BlueprintReadOnly, meta = (BlueprintProtected, AllowPrivateAccess = "true"))

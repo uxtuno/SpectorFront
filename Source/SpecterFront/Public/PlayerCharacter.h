@@ -103,6 +103,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player")
 		UBaseCameraController* GetCurrentCameraController() { return currentCameraController; }
 
+	// シーンチェンジ時に必ず呼ぶこと
+	UFUNCTION(BlueprintCallable, Category = "Player")
+		void OnLevelChanged();
+
 protected:
 
 	/** Fires a projectile. */
@@ -169,6 +173,9 @@ public:
 	// HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
 		float hp;
+	// HP
+	UPROPERTY(BlueprintReadOnly, Category = Status)
+		float maxHp;
 
 	// 攻撃力
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
@@ -185,6 +192,10 @@ public:
 protected:
 	UPROPERTY(BlueprintReadWrite, Category = Camera, meta = (BlueprintProtected))
 		class UCameraComponent* cameraComponent;
+
+	// 着弾
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player", meta = (BlueprintProtected))
+		void OnLanding(FHitResult hit);
 
 private:
 	// 発射可能時間までをカウントダウンする(0.0f以下なら発射可能)

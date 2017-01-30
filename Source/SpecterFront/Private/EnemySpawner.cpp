@@ -28,7 +28,7 @@ void AEnemySpawner::EnemySpawn(const FVector location)
 
 	FActorSpawnParameters p;
 	p.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	auto enemy = GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p);
+	ABaseEnemy* const enemy = Cast<ABaseEnemy>(GetWorld()->SpawnActor(spawnEnemyType, &location, &rotation, p));
 	auto ienemy = Cast<IEnemyInterface>(enemy);
 
 	if (enemy == nullptr)
@@ -41,5 +41,5 @@ void AEnemySpawner::EnemySpawn(const FVector location)
 	Cast<APawn>(enemy)->SpawnDefaultController();
 
 	ienemy->Execute_AddObserver(enemy, this);
-	NotifiAddEnemy();
+	NotifiAddEnemy(enemy);
 }

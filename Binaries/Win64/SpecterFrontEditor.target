@@ -2,7 +2,7 @@
 	"TargetName" : "SpecterFrontEditor",
 	"Platform" : "Win64",
 	"Configuration" : "Development",
-	"BuildId" : "a86c448e-c276-44e3-bb17-adc0c6c638cd",
+	"BuildId" : "5958fe4b-8310-4df9-9ac4-633611490717",
 	"Version" : 
 	{
 		"MajorVersion" : 4,
@@ -15,15 +15,15 @@
 	"BuildProducts" :
 	[
 		{
-			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront.dll",
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-1229.dll",
 			"Type" : "DynamicLibrary"
 		},
 		{
-			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront.pdb",
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-1229.pdb",
 			"Type" : "SymbolFile"
 		},
 		{
-			"Path" : "$(ProjectDir)/Intermediate/Build/Win64/UE4Editor/Development/UE4Editor-SpecterFront.lib",
+			"Path" : "$(ProjectDir)/Intermediate/Build/Win64/UE4Editor/Development/UE4Editor-SpecterFront-1229.lib",
 			"Type" : "ImportLibrary"
 		}
 	],

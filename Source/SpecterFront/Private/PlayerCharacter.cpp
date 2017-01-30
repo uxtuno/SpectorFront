@@ -47,6 +47,7 @@ void APlayerCharacter::BeginPlay()
 
 	isShootInput = false;
 	shootIntervalCount = 0.0f;
+	maxHp = hp;
 
 	// ビューポートのサイズを格納
 	GEngine->GameViewport->GetViewportSize(viewPortSize);
@@ -171,8 +172,8 @@ void APlayerCharacter::OnFire_Implementation()
 
 		FHitResult hit;
 		FVector start = FVector(worldLocation);
-		FVector end = start + worldDirection * 3000.0f;
-		ECollisionChannel c = ECollisionChannel::ECC_WorldDynamic;
+		FVector end = start + worldDirection * 10000.0f;
+		ECollisionChannel c = static_cast<ECollisionChannel>(ECollisionChannel::ECC_WorldDynamic | ECollisionChannel::ECC_WorldStatic);
 		FCollisionQueryParams p;
 		FCollisionResponseParams rp;
 		p.AddIgnoredActor(this);
@@ -184,9 +185,10 @@ void APlayerCharacter::OnFire_Implementation()
 
 			if (hit.Actor != this)
 			{
+				OnLanding(hit);
+
 				auto component = Cast<UPrimitiveComponent>(hit.Actor->GetComponentByClass(UPrimitiveComponent::StaticClass()));
 				
-
 				if (component != nullptr && component->IsSimulatingPhysics())
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Cyan, FString(hit.Actor->GetName()));
@@ -234,6 +236,12 @@ void APlayerCharacter::OnFire_Implementation()
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 
+}
+
+void APlayerCharacter::OnLevelChanged()
+{
+	isShootInput = false;
+	hp = maxHp;
 }
 
 void APlayerCharacter::OnFirePressed()
