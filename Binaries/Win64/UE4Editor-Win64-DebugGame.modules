@@ -1,8 +1,8 @@
 {
 	"Changelist" : 3039270,
-	"BuildId" : "36a5233d-be62-4c63-a93e-a948ff6d44db",
+	"BuildId" : "559065e5-33b9-44c6-a7eb-9523e4dd2f0f",
 	"Modules" : 
 	{
-		"SpecterFront" : "UE4Editor-SpecterFront-Win64-DebugGame.dll"
+		"SpecterFront" : "UE4Editor-SpecterFront-733-Win64-DebugGame.dll"
 	}
 }
