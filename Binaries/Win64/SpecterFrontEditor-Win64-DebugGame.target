@@ -2,7 +2,7 @@
 	"TargetName" : "SpecterFrontEditor",
 	"Platform" : "Win64",
 	"Configuration" : "DebugGame",
-	"BuildId" : "36a5233d-be62-4c63-a93e-a948ff6d44db",
+	"BuildId" : "559065e5-33b9-44c6-a7eb-9523e4dd2f0f",
 	"Version" : 
 	{
 		"MajorVersion" : 4,
@@ -15,15 +15,15 @@
 	"BuildProducts" :
 	[
 		{
-			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-Win64-DebugGame.dll",
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-733-Win64-DebugGame.dll",
 			"Type" : "DynamicLibrary"
 		},
 		{
-			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-Win64-DebugGame.pdb",
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-SpecterFront-733-Win64-DebugGame.pdb",
 			"Type" : "SymbolFile"
 		},
 		{
-			"Path" : "$(ProjectDir)/Intermediate/Build/Win64/UE4Editor/DebugGame/UE4Editor-SpecterFront-Win64-DebugGame.lib",
+			"Path" : "$(ProjectDir)/Intermediate/Build/Win64/UE4Editor/DebugGame/UE4Editor-SpecterFront-733-Win64-DebugGame.lib",
 			"Type" : "ImportLibrary"
 		}
 	],
